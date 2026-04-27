@@ -158,43 +158,45 @@ function PostCard({
               </span>
             </div>
           </div>
-          <div className="relative">
-            <button
-              onClick={() => setMenuOpen(!menuOpen)}
-              className="w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-300 hover:bg-white/[0.06]"
-              style={{ color: '#555' }}
-            >
-              <MoreHorizontal className="w-4 h-4" />
-            </button>
-            {menuOpen && (
-              <div className="absolute top-full right-0 mt-1 w-44 bg-[#1a1a1a] border border-white/[0.08] rounded-xl shadow-xl shadow-black/30 py-1 z-20">
-                {user && !reported && (
-                  <button
-                    onClick={() => { handleReport(); setMenuOpen(false); }}
-                    className="w-full flex items-center gap-2.5 px-4 py-2.5 text-left text-sm font-inter text-white/50 hover:text-amber-400 hover:bg-white/[0.03] transition-colors"
-                  >
-                    <Flag className="w-3.5 h-3.5" />
-                    Report Post
-                  </button>
-                )}
-                {reported && (
-                  <div className="px-4 py-2.5 text-sm font-inter text-amber-400/70">
-                    &#10003; Reported
-                  </div>
-                )}
-                {canDelete && (
-                  <button
-                    onClick={() => { handleDelete(); setMenuOpen(false); }}
-                    disabled={deleting}
-                    className="w-full flex items-center gap-2.5 px-4 py-2.5 text-left text-sm font-inter text-white/50 hover:text-red-400 hover:bg-white/[0.03] transition-colors"
-                  >
-                    <Trash2 className="w-3.5 h-3.5" />
-                    Delete Post
-                  </button>
-                )}
-              </div>
-            )}
-          </div>
+          {/* Only show menu to logged-in users */}
+          {user && (
+            <div className="relative">
+              <button
+                onClick={() => setMenuOpen(!menuOpen)}
+                className="w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-300 hover:bg-white/[0.06]"
+                style={{ color: '#555' }}
+              >
+                <MoreHorizontal className="w-4 h-4" />
+              </button>
+              {menuOpen && (
+                <div className="absolute top-full right-0 mt-1 w-44 bg-[#1a1a1a] border border-white/[0.08] rounded-xl shadow-xl shadow-black/30 py-1 z-20">
+                  {!reported ? (
+                    <button
+                      onClick={() => { handleReport(); setMenuOpen(false); }}
+                      className="w-full flex items-center gap-2.5 px-4 py-2.5 text-left text-sm font-inter text-white/50 hover:text-amber-400 hover:bg-white/[0.03] transition-colors"
+                    >
+                      <Flag className="w-3.5 h-3.5" />
+                      Report Post
+                    </button>
+                  ) : (
+                    <div className="px-4 py-2.5 text-sm font-inter text-amber-400/70">
+                      &#10003; Reported
+                    </div>
+                  )}
+                  {canDelete && (
+                    <button
+                      onClick={() => { handleDelete(); setMenuOpen(false); }}
+                      disabled={deleting}
+                      className="w-full flex items-center gap-2.5 px-4 py-2.5 text-left text-sm font-inter text-white/50 hover:text-red-400 hover:bg-white/[0.03] transition-colors"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                      Delete Post
+                    </button>
+                  )}
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Content */}

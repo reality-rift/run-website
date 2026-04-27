@@ -129,10 +129,10 @@ export function useUserProfile(userId: string | undefined) {
       }
 
       if (eventsRes.data) {
-        const approvedEvents = eventsRes.data
+        const allEvents = eventsRes.data
           .map((r: any) => r.events as EventRow)
-          .filter((e): e is EventRow => !!e && e.status === 'approved');
-        setEvents(approvedEvents);
+          .filter((e): e is EventRow => !!e);
+        setEvents(allEvents);
       }
 
       setLoading(false);
