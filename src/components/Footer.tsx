@@ -25,7 +25,7 @@ export default function Footer() {
               to="/"
               className="inline-block font-syne font-extrabold text-lg tracking-[-0.04em] text-[#F5F5F0] mb-4"
             >
-              SPORTARCH
+              SPORTSARCH
             </Link>
             <p className="font-inter text-[13px] text-white/30 leading-[1.7] max-w-sm">
               India's platform for discovering running and cycling events.
@@ -78,7 +78,7 @@ export default function Footer() {
         {/* Copyright */}
         <div className="mt-8 pt-6 border-t border-white/[0.04] flex flex-col sm:flex-row items-center justify-between gap-3">
           <span className="font-inter text-[11px] text-white/15">
-            &copy; {new Date().getFullYear()} SPORTARCH. All rights reserved.
+            &copy; {new Date().getFullYear()} SPORTSARCH. All rights reserved.
           </span>
           <span className="font-inter text-[11px] text-white/10">
             Made in India
@@ -99,7 +99,7 @@ export default function Footer() {
               paddingRight: '0.05em',
             }}
           >
-            SPORTARCH
+            SPORTSARCH
           </span>
         </div>
       </div>

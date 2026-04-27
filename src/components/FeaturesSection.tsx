@@ -131,7 +131,7 @@ export default function FeaturesSection() {
           <div>
             <span className="inline-flex items-center gap-2 text-[10px] font-inter font-bold uppercase tracking-[0.25em] text-accent/80 mb-5">
               <span className="w-8 h-px bg-accent/50" />
-              Why SPORTARCH
+              Why SPORTSARCH
             </span>
             <h2 className="font-playfair text-4xl md:text-5xl lg:text-6xl text-[#F5F5F0] leading-[1.1] max-w-xl">
               Built for runners,{' '}

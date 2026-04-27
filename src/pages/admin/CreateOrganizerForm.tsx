@@ -93,7 +93,7 @@ export default function CreateOrganizerForm({ onCreated }: { onCreated: () => vo
 
   const copyCredentials = async () => {
     if (!created) return;
-    const text = `SPORTARCH Organizer Credentials\n\nEmail: ${created.email}\nPassword: ${created.password}${created.displayName ? `\nName: ${created.displayName}` : ''}${created.phone ? `\nPhone: ${created.phone}` : ''}${created.organization ? `\nOrganization: ${created.organization}` : ''}\n\nLogin at: ${window.location.origin}/login`;
+    const text = `SPORTSARCH Organizer Credentials\n\nEmail: ${created.email}\nPassword: ${created.password}${created.displayName ? `\nName: ${created.displayName}` : ''}${created.phone ? `\nPhone: ${created.phone}` : ''}${created.organization ? `\nOrganization: ${created.organization}` : ''}\n\nLogin at: ${window.location.origin}/login`;
     await navigator.clipboard.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);

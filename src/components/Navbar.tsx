@@ -79,7 +79,7 @@ export default function Navbar() {
             onClick={() => setMobileOpen(false)}
           >
             <span className="font-syne font-extrabold text-xl tracking-[-0.04em] text-[#F5F5F0] group-hover:text-accent transition-colors duration-300">
-              SPORT<span className="text-accent">ARCH</span>
+              SPORTS<span className="text-accent">ARCH</span>
             </span>
           </Link>
 

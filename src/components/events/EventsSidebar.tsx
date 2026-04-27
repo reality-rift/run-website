@@ -16,7 +16,7 @@ const SPORT_OPTIONS = [
 const DISTANCE_GROUPS = [
   { label: 'Short', options: ['5K', '10K', '12K'] },
   { label: 'Mid', options: ['Half Marathon', 'Full Marathon'] },
-  { label: 'Ultra / Long', options: ['50K', '50 km', '100 km', '200 km'] },
+  { label: 'Ultra / Long', options: ['50 km', '100 km', '200 km'] },
 ];
 
 const MONTH_NAMES = [

@@ -30,6 +30,9 @@ export interface EventRow {
   rejection_reason: string;
   contact_info: string;
   website_url: string;
+  location_address: string;
+  location_lat: number | null;
+  location_lng: number | null;
   created_at: string;
 }
 

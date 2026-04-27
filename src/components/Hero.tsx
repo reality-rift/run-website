@@ -1,5 +1,5 @@
-import { useState, useEffect, useCallback } from 'react';
-import { Search, Zap, PersonStanding, Bike } from 'lucide-react';
+import { useState, useEffect, useCallback, useRef } from 'react';
+import { Search, Zap, PersonStanding, Bike, MapPin } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const slides = [
@@ -26,8 +26,11 @@ const slides = [
 const INTERVAL = 5000;
 
 const INDIAN_CITIES = [
-  'All Cities',
-  'Mumbai', 'Hyderabad', 'Chennai', 'Bengaluru',
+  'Mumbai', 'Delhi', 'Bengaluru', 'Hyderabad', 'Chennai',
+  'Kolkata', 'Pune', 'Ahmedabad', 'Jaipur', 'Lucknow',
+  'Chandigarh', 'Kochi', 'Goa', 'Indore', 'Coimbatore',
+  'Vadodara', 'Nagpur', 'Visakhapatnam', 'Bhopal', 'Thiruvananthapuram',
+  'Dehradun', 'Mysuru', 'Guwahati', 'Leh',
 ];
 
 const sportOptions = [
@@ -39,6 +42,9 @@ const sportOptions = [
 export default function Hero() {
   const navigate = useNavigate();
   const [city, setCity] = useState('');
+  const [cityQuery, setCityQuery] = useState('');
+  const [cityOpen, setCityOpen] = useState(false);
+  const cityRef = useRef<HTMLDivElement>(null);
   const [sport, setSport] = useState('all');
   const [activeIndex, setActiveIndex] = useState(0);
   const [animating, setAnimating] = useState(false);
@@ -55,6 +61,21 @@ export default function Hero() {
     const id = setInterval(advance, INTERVAL);
     return () => clearInterval(id);
   }, [advance]);
+
+  /* Close city dropdown on outside click */
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (cityRef.current && !cityRef.current.contains(e.target as Node)) {
+        setCityOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
+
+  const filteredCities = cityQuery.trim()
+    ? INDIAN_CITIES.filter((c) => c.toLowerCase().includes(cityQuery.toLowerCase()))
+    : INDIAN_CITIES;
 
   const handleSearch = () => {
     const params = new URLSearchParams();
@@ -149,22 +170,68 @@ export default function Hero() {
         {/* Search bar */}
         <div className="mt-12 animate-fade-in-up animation-delay-200">
           <div className="glass rounded-2xl md:rounded-full p-4 md:p-2 flex flex-col md:flex-row items-stretch gap-3 md:gap-0 max-w-3xl shadow-2xl shadow-black/20">
-            {/* City select */}
-            <div className="flex-1 px-5 flex flex-col justify-center h-14 group">
+            {/* City search */}
+            <div ref={cityRef} className="flex-1 px-5 flex flex-col justify-center h-14 group relative">
               <label className="text-[9px] font-inter font-bold uppercase tracking-[0.2em] text-white/25 group-focus-within:text-accent/60 transition-colors duration-300">
                 City
               </label>
-              <select
-                value={city}
-                onChange={(e) => setCity(e.target.value)}
-                className="bg-transparent text-sm font-inter text-white/90 outline-none w-full appearance-none cursor-pointer"
-              >
-                {INDIAN_CITIES.map((c) => (
-                  <option key={c} value={c === 'All Cities' ? '' : c} className="bg-[#1a1a1a] text-white">
-                    {c}
-                  </option>
-                ))}
-              </select>
+              <div className="relative flex items-center">
+                <MapPin className="w-3.5 h-3.5 text-white/20 mr-1.5 shrink-0" />
+                <input
+                  type="text"
+                  value={cityOpen ? cityQuery : city || 'All Cities'}
+                  onChange={(e) => {
+                    setCityQuery(e.target.value);
+                    setCity(e.target.value);
+                    if (!cityOpen) setCityOpen(true);
+                  }}
+                  onFocus={() => {
+                    setCityOpen(true);
+                    setCityQuery(city);
+                  }}
+                  placeholder="Search city..."
+                  className="bg-transparent text-sm font-inter text-white/90 outline-none w-full"
+                />
+              </div>
+              {cityOpen && (
+                <div className="absolute top-full left-0 mt-2 w-full max-h-60 overflow-y-auto rounded-xl border border-white/[0.1] bg-[#1a1a1a]/95 backdrop-blur-xl shadow-2xl shadow-black/40 z-50">
+                  {/* All Cities option */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setCity('');
+                      setCityQuery('');
+                      setCityOpen(false);
+                    }}
+                    className={`w-full text-left px-4 py-2.5 text-sm font-inter transition-colors duration-150 ${
+                      !city ? 'bg-accent/10 text-accent' : 'text-white/60 hover:bg-white/[0.06] hover:text-white/80'
+                    }`}
+                  >
+                    All Cities
+                  </button>
+                  {filteredCities.map((c) => (
+                    <button
+                      key={c}
+                      type="button"
+                      onClick={() => {
+                        setCity(c);
+                        setCityQuery(c);
+                        setCityOpen(false);
+                      }}
+                      className={`w-full text-left px-4 py-2.5 text-sm font-inter transition-colors duration-150 ${
+                        city === c ? 'bg-accent/10 text-accent' : 'text-white/60 hover:bg-white/[0.06] hover:text-white/80'
+                      }`}
+                    >
+                      {c}
+                    </button>
+                  ))}
+                  {filteredCities.length === 0 && (
+                    <div className="px-4 py-3 text-xs font-inter text-white/30">
+                      No match — your typed city will be used
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
 
             {/* Divider */}

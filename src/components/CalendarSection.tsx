@@ -5,7 +5,14 @@ import { useCalendarEvents } from '../hooks/useCalendarEvents';
 import { resolveImageUrl } from '../lib/imageUrl';
 import type { EventRow } from '../lib/supabase';
 
-const FILTER_CITIES = ['All Cities', 'Mumbai', 'Hyderabad', 'Chennai', 'Bengaluru'];
+const FILTER_CITIES = [
+  'All Cities',
+  'Mumbai', 'Delhi', 'Bengaluru', 'Hyderabad', 'Chennai',
+  'Kolkata', 'Pune', 'Ahmedabad', 'Jaipur', 'Lucknow',
+  'Chandigarh', 'Kochi', 'Goa', 'Indore', 'Coimbatore',
+  'Vadodara', 'Nagpur', 'Visakhapatnam', 'Bhopal', 'Thiruvananthapuram',
+  'Dehradun', 'Mysuru', 'Guwahati', 'Leh',
+];
 const FILTER_SPORTS = [
   { value: '', label: 'All Sports', Icon: Zap },
   { value: 'running', label: 'Running', Icon: PersonStanding },

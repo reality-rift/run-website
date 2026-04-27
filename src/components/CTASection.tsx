@@ -33,7 +33,7 @@ export default function CTASection() {
                 <span className="italic font-normal text-white/40">Starts Here</span>
               </h2>
               <p className="font-inter text-white/35 text-base md:text-lg leading-[1.7] mb-10 max-w-md">
-                Whether you are a weekend jogger or an ultra-marathon veteran, SPORTARCH
+                Whether you are a weekend jogger or an ultra-marathon veteran, SPORTSARCH
                 connects you with the events that matter.
               </p>
               <div className="flex flex-col sm:flex-row gap-3">

@@ -9,7 +9,7 @@ const sections = [
   {
     title: 'How We Use Your Information',
     content:
-      'Your information is used to provide and personalize the SPORTARCH platform, process event registrations, send relevant notifications about events you have saved or registered for, and improve our services. We never sell your personal data to third parties.',
+      'Your information is used to provide and personalize the SPORTSARCH platform, process event registrations, send relevant notifications about events you have saved or registered for, and improve our services. We never sell your personal data to third parties.',
   },
   {
     title: 'Data Storage & Security',
@@ -62,7 +62,7 @@ export default function PrivacyPage() {
 
           <div className="mb-12">
             <p className="font-inter text-white/60 leading-relaxed text-lg">
-              At SPORTARCH, we take your privacy seriously. This policy describes how we
+              At SPORTSARCH, we take your privacy seriously. This policy describes how we
               collect, use, and protect your personal information when you use our platform.
             </p>
           </div>

@@ -4,7 +4,7 @@ const sections = [
   {
     title: 'Acceptance of Terms',
     content:
-      'By accessing or using the SPORTARCH platform, you agree to be bound by these Terms of Service. If you do not agree to these terms, you may not use the platform. We reserve the right to modify these terms at any time, and your continued use constitutes acceptance of any changes.',
+      'By accessing or using the SPORTSARCH platform, you agree to be bound by these Terms of Service. If you do not agree to these terms, you may not use the platform. We reserve the right to modify these terms at any time, and your continued use constitutes acceptance of any changes.',
   },
   {
     title: 'Account Registration',
@@ -14,7 +14,7 @@ const sections = [
   {
     title: 'Event Listings',
     content:
-      'Event organizers are responsible for the accuracy of their event listings, including dates, locations, pricing, and descriptions. SPORTARCH serves as a discovery platform and does not organize, manage, or guarantee any listed events. Registration for events is between you and the event organizer.',
+      'Event organizers are responsible for the accuracy of their event listings, including dates, locations, pricing, and descriptions. SPORTSARCH serves as a discovery platform and does not organize, manage, or guarantee any listed events. Registration for events is between you and the event organizer.',
   },
   {
     title: 'User Conduct',
@@ -24,17 +24,17 @@ const sections = [
   {
     title: 'Intellectual Property',
     content:
-      'All content on the SPORTARCH platform, including logos, design, text, and software, is owned by SPORTARCH or its licensors and is protected by intellectual property laws. Event images and descriptions remain the property of their respective organizers.',
+      'All content on the SPORTSARCH platform, including logos, design, text, and software, is owned by SPORTSARCH or its licensors and is protected by intellectual property laws. Event images and descriptions remain the property of their respective organizers.',
   },
   {
     title: 'Limitation of Liability',
     content:
-      'SPORTARCH is provided "as is" without warranties of any kind. We are not liable for any indirect, incidental, or consequential damages arising from your use of the platform, including but not limited to event cancellations, changes, or disputes with event organizers.',
+      'SPORTSARCH is provided "as is" without warranties of any kind. We are not liable for any indirect, incidental, or consequential damages arising from your use of the platform, including but not limited to event cancellations, changes, or disputes with event organizers.',
   },
   {
     title: 'Platform Usage',
     content:
-      'SPORTARCH is a free platform for discovering and registering for running and cycling events. Event entry fees are set by and paid directly to event organizers. SPORTARCH does not process payments or charge fees for platform access. Organizers are responsible for their own pricing and payment collection.',
+      'SPORTSARCH is a free platform for discovering and registering for running and cycling events. Event entry fees are set by and paid directly to event organizers. SPORTSARCH does not process payments or charge fees for platform access. Organizers are responsible for their own pricing and payment collection.',
   },
   {
     title: 'Governing Law',
@@ -62,7 +62,7 @@ export default function TermsPage() {
 
           <div className="mb-12">
             <p className="font-inter text-white/60 leading-relaxed text-lg">
-              Welcome to SPORTARCH. These terms govern your use of our platform and
+              Welcome to SPORTSARCH. These terms govern your use of our platform and
               services. Please read them carefully before creating an account or using any
               features.
             </p>

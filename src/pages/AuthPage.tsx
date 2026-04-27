@@ -121,7 +121,7 @@ export default function AuthPage() {
           {/* Top logo */}
           <div>
             <Link to="/" className="font-syne font-bold text-xl text-white/90 tracking-wider">
-              SPORTARCH
+              SPORTSARCH
             </Link>
           </div>
 
@@ -134,7 +134,7 @@ export default function AuthPage() {
               <span className="italic font-normal text-white/50">Starts Here</span>
             </h2>
             <p className="font-inter text-white/35 text-sm leading-relaxed max-w-md">
-              Join thousands of athletes who use SPORTARCH to discover events,
+              Join thousands of athletes who use SPORTSARCH to discover events,
               track registrations, and connect with the endurance community across India.
             </p>
             {/* Stats row */}
@@ -162,7 +162,7 @@ export default function AuthPage() {
           {/* Mobile logo */}
           <div className="lg:hidden mb-12">
             <Link to="/" className="font-syne font-bold text-xl text-accent tracking-wider">
-              SPORTARCH
+              SPORTSARCH
             </Link>
           </div>
 
@@ -174,7 +174,7 @@ export default function AuthPage() {
             <p className="font-inter text-sm text-white/40 leading-relaxed">
               {mode === 'login'
                 ? 'Sign in to access your saved events and registrations.'
-                : 'Join SPORTARCH to discover and register for events across India.'}
+                : 'Join SPORTSARCH to discover and register for events across India.'}
             </p>
           </div>
 

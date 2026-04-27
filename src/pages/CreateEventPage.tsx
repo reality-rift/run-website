@@ -5,6 +5,7 @@ import { supabase } from '../lib/supabase';
 import { useToast } from '../components/Toast';
 import { isValidUrl } from '../lib/validation';
 import ImagePicker from '../components/ImagePicker';
+import LocationPicker from '../components/LocationPicker';
 import {
   ArrowLeft,
   Loader2,
@@ -29,7 +30,11 @@ const COMMON_CATEGORIES: Record<string, string[]> = {
 };
 
 const INDIAN_CITIES = [
-  'Mumbai', 'Hyderabad', 'Chennai', 'Bengaluru',
+  'Mumbai', 'Delhi', 'Bengaluru', 'Hyderabad', 'Chennai',
+  'Kolkata', 'Pune', 'Ahmedabad', 'Jaipur', 'Lucknow',
+  'Chandigarh', 'Kochi', 'Goa', 'Indore', 'Coimbatore',
+  'Vadodara', 'Nagpur', 'Visakhapatnam', 'Bhopal', 'Thiruvananthapuram',
+  'Dehradun', 'Mysuru', 'Guwahati', 'Leh',
 ];
 
 const INDIAN_STATES = [
@@ -50,6 +55,9 @@ interface FormData {
   city: string;
   state: string;
   area: string;
+  locationAddress: string;
+  locationLat: number | null;
+  locationLng: number | null;
   imageUrl: string;
   websiteUrl: string;
   contactInfo: string;
@@ -73,6 +81,9 @@ const INITIAL_FORM: FormData = {
   city: '',
   state: '',
   area: '',
+  locationAddress: '',
+  locationLat: null,
+  locationLng: null,
   imageUrl: '',
   websiteUrl: '',
   contactInfo: '',
@@ -259,6 +270,9 @@ export default function CreateEventPage() {
         city: form.city.trim(),
         state: form.state.trim(),
         area: form.area.trim(),
+        location_address: form.locationAddress.trim(),
+        location_lat: form.locationLat,
+        location_lng: form.locationLng,
         image_url: form.imageUrl.trim(),
         website_url: form.websiteUrl.trim(),
         contact_info: form.contactInfo.trim(),
@@ -301,7 +315,7 @@ export default function CreateEventPage() {
             Organizer Access Required
           </h1>
           <p className="font-inter text-sm text-white/40 mb-8 leading-relaxed">
-            Only approved organizers can create events on SPORTARCH. If you'd like to list your event, contact our team to get organizer access.
+            Only approved organizers can create events on SPORTSARCH. If you'd like to list your event, contact our team to get organizer access.
           </p>
           <button
             onClick={() => navigate('/events')}
@@ -460,6 +474,23 @@ export default function CreateEventPage() {
                   Location
                 </h2>
               </div>
+
+              {/* Google Location Search */}
+              <FieldGroup label="Venue Location">
+                <LocationPicker
+                  address={form.locationAddress}
+                  lat={form.locationLat}
+                  lng={form.locationLng}
+                  onLocationChange={(addr, lat, lng) => {
+                    setForm((prev) => ({
+                      ...prev,
+                      locationAddress: addr,
+                      locationLat: lat,
+                      locationLng: lng,
+                    }));
+                  }}
+                />
+              </FieldGroup>
 
               <FieldGroup label="Area / Locality">
                 <input
