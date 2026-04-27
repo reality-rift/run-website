@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { Trash2, Flag, MoreHorizontal, MessageCircle } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { supabase } from '../../lib/supabase';
@@ -128,24 +129,30 @@ function PostCard({
         {/* Author row */}
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
-            {post.author_avatar_url ? (
-              <img
-                src={post.author_avatar_url}
-                alt={displayName || 'User avatar'}
-                className="w-10 h-10 rounded-full object-cover ring-1 ring-white/[0.06]"
-              />
-            ) : (
-              <div
-                className="w-10 h-10 rounded-full flex items-center justify-center font-syne font-bold text-sm ring-1 ring-white/[0.06]"
-                style={{ background: '#2a2a2a', color: '#FF3B10' }}
-              >
-                {initial}
-              </div>
-            )}
+            <Link to={`/user/${post.author_id}`} className="shrink-0">
+              {post.author_avatar_url ? (
+                <img
+                  src={post.author_avatar_url}
+                  alt={displayName || 'User avatar'}
+                  className="w-10 h-10 rounded-full object-cover ring-1 ring-white/[0.06] hover:ring-accent/30 transition-all duration-300"
+                />
+              ) : (
+                <div
+                  className="w-10 h-10 rounded-full flex items-center justify-center font-syne font-bold text-sm ring-1 ring-white/[0.06] hover:ring-accent/30 transition-all duration-300"
+                  style={{ background: '#2a2a2a', color: '#FF3B10' }}
+                >
+                  {initial}
+                </div>
+              )}
+            </Link>
             <div>
-              <span className="font-syne font-bold text-sm block" style={{ color: '#F5F5F0' }}>
+              <Link
+                to={`/user/${post.author_id}`}
+                className="font-syne font-bold text-sm block hover:text-accent transition-colors duration-300"
+                style={{ color: '#F5F5F0' }}
+              >
                 {displayName}
-              </span>
+              </Link>
               <span className="font-inter text-[11px]" style={{ color: '#555' }}>
                 {relativeTime(post.created_at)}
               </span>

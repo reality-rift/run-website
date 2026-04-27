@@ -51,6 +51,8 @@ export interface ProfileRow {
   phone: string;
   location: string;
   privacy_accepted: boolean;
+  bio: string;
+  avatar_url: string;
   created_at: string;
 }
 

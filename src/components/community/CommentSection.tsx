@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Send } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import type { ForumCommentRow } from '../../lib/supabase';
-import { useNavigate } from 'react-router-dom';
 
 function relativeTime(dateStr: string): string {
   const now = Date.now();
@@ -82,17 +82,22 @@ export default function CommentSection({ postId, fetchComments, addComment, onCo
         <div className="flex flex-col gap-3 mb-4">
           {comments.map((c) => (
             <div key={c.id} className="flex items-start gap-3">
-              <div
-                className="w-7 h-7 rounded-full flex items-center justify-center shrink-0 font-syne font-bold text-xs"
+              <Link
+                to={`/user/${c.author_id}`}
+                className="w-7 h-7 rounded-full flex items-center justify-center shrink-0 font-syne font-bold text-xs hover:ring-1 hover:ring-accent/30 transition-all duration-300"
                 style={{ background: '#333', color: '#ccc' }}
               >
                 {c.author_name.charAt(0).toUpperCase()}
-              </div>
+              </Link>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
-                  <span className="font-syne font-bold text-xs" style={{ color: '#ddd' }}>
+                  <Link
+                    to={`/user/${c.author_id}`}
+                    className="font-syne font-bold text-xs hover:text-accent transition-colors duration-300"
+                    style={{ color: '#ddd' }}
+                  >
                     {c.author_name}
-                  </span>
+                  </Link>
                   <span className="font-inter text-[10px]" style={{ color: '#555' }}>
                     {relativeTime(c.created_at)}
                   </span>

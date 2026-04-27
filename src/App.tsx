@@ -21,6 +21,7 @@ import AuthPage from './pages/AuthPage';
 import CreateEventPage from './pages/CreateEventPage';
 import AdminPage from './pages/admin/AdminPage';
 import CommunityPage from './pages/CommunityPage';
+import UserProfilePage from './pages/UserProfilePage';
 import NotFoundPage from './pages/NotFoundPage';
 import PrivacyPage from './pages/PrivacyPage';
 import TermsPage from './pages/TermsPage';
@@ -56,6 +57,7 @@ export default function App() {
                 <Route path="/events" element={<EventsPage />} />
                 <Route path="/events/:id" element={<EventDetailPage />} />
                 <Route path="/community" element={<CommunityPage />} />
+                <Route path="/user/:userId" element={<UserProfilePage />} />
                 <Route path="/editorial" element={<EditorialPage />} />
                 <Route path="/editorial/:slug" element={<ArticlePage />} />
                 <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />

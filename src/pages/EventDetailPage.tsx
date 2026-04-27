@@ -590,7 +590,7 @@ function HelloAriaReminder({ eventTitle, eventDate }: { eventTitle: string; even
       reminderText = `on ${reminderFormatted} (${selectedReminder} days before)`;
     }
 
-    const message = `Hi Aria, please remind me about "${eventTitle}" happening on ${formattedDate}. Set my reminder ${reminderText}. Thanks!`;
+    const message = `Hi Aria, please remind me about "${eventTitle}" happening on ${formattedDate}. Set my reminder ${reminderText} at 8:00 AM. Thanks!`;
     return `https://wa.me/917075471676?text=${encodeURIComponent(message)}`;
   };
 
@@ -651,6 +651,11 @@ function HelloAriaReminder({ eventTitle, eventDate }: { eventTitle: string; even
         </svg>
         Get Reminders on WhatsApp
       </a>
+
+      {/* New user disclaimer */}
+      <p className="font-inter text-[10px] text-white/20 leading-relaxed mt-3">
+        First time using Aria? You'll receive a short onboarding message. Simply re-send your reminder message after onboarding to set it up.
+      </p>
     </div>
   );
 }

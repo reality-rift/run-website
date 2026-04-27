@@ -138,7 +138,7 @@ function EventListCard({
               </h2>
               <div className="shrink-0 text-right">
                 <span className="block font-inter font-semibold uppercase tracking-wider mb-0.5" style={{ color: '#999', fontSize: '9px' }}>
-                  From
+                  Starts from
                 </span>
                 <span className="font-syne font-bold tabular-nums leading-none" style={{ color: '#ffffff', fontSize: '24px' }}>
                   {'\u20B9'}{event.price.toLocaleString('en-IN')}

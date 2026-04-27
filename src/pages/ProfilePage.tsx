@@ -29,7 +29,7 @@ export default function ProfilePage() {
   const { user, loading: authLoading, signOut, isOrganizer } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [tab, setTab] = useState<Tab>('saved');
+  const [tab, setTab] = useState<Tab>('registered');
   const [savedEvents, setSavedEvents] = useState<EventRow[]>([]);
   const [registeredEvents, setRegisteredEvents] = useState<EventRow[]>([]);
   const [myEvents, setMyEvents] = useState<EventRow[]>([]);
@@ -193,8 +193,8 @@ export default function ProfilePage() {
   };
 
   const tabs: { key: Tab; label: string; icon: typeof Heart; count: number; show: boolean }[] = [
-    { key: 'saved', label: 'Shortlisted', icon: Heart, count: savedEvents.length, show: true },
     { key: 'registered', label: 'Registered', icon: Calendar, count: registeredEvents.length, show: true },
+    { key: 'saved', label: 'Shortlisted', icon: Heart, count: savedEvents.length, show: true },
     { key: 'myevents', label: 'My Events', icon: Megaphone, count: myEvents.length, show: !!isOrganizer },
   ];
 
