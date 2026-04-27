@@ -55,12 +55,20 @@ function PostCard({
     else if (activeReaction === null) setActiveReaction(0);
   }, [liked]);
 
-  // Close menu on outside click
+  // Close menu on outside click (use capture to avoid toggle re-open)
   useEffect(() => {
     if (!menuOpen) return;
-    const close = () => setMenuOpen(false);
-    document.addEventListener('click', close);
-    return () => document.removeEventListener('click', close);
+    const close = (e: MouseEvent) => {
+      setMenuOpen(false);
+    };
+    // Use setTimeout so the current click event finishes before listener is added
+    const timer = setTimeout(() => {
+      document.addEventListener('click', close);
+    }, 0);
+    return () => {
+      clearTimeout(timer);
+      document.removeEventListener('click', close);
+    };
   }, [menuOpen]);
 
   const canDelete = user && (user.id === post.author_id || role === 'admin');
@@ -160,7 +168,7 @@ function PostCard({
           </div>
           {/* Only show menu to logged-in users */}
           {user && (
-            <div className="relative">
+            <div className="relative" style={{ zIndex: menuOpen ? 50 : 'auto' }}>
               <button
                 onClick={() => setMenuOpen(!menuOpen)}
                 className="w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-300 hover:bg-white/[0.06]"
@@ -169,7 +177,7 @@ function PostCard({
                 <MoreHorizontal className="w-4 h-4" />
               </button>
               {menuOpen && (
-                <div className="absolute top-full right-0 mt-1 w-44 bg-[#1a1a1a] border border-white/[0.08] rounded-xl shadow-xl shadow-black/30 py-1 z-20">
+                <div className="absolute top-full right-0 mt-1 w-44 bg-[#1a1a1a] border border-white/[0.08] rounded-xl shadow-xl shadow-black/30 py-1 z-50">
                   {!reported ? (
                     <button
                       onClick={() => { handleReport(); setMenuOpen(false); }}
@@ -333,10 +341,10 @@ function PostCard({
               }));
             }}
             addComment={async (id, content) => {
-        
+              if (!user) return null;
               const { data } = await supabase
                 .from('forum_comments')
-                .insert({ post_id: id, content, author_id: user?.id })
+                .insert({ post_id: id, content, author_id: user.id })
                 .select('*, profiles(display_name)')
                 .maybeSingle();
               if (data) {

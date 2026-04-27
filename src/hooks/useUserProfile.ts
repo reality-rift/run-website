@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { supabase, type EventRow, type ProfileRow } from '../lib/supabase';
 import { useAuth } from '../contexts/AuthContext';
 import type { PostWithAuthor } from './usePosts';
@@ -34,6 +34,7 @@ export function useUserProfile(userId: string | undefined) {
   const [isFollowing, setIsFollowing] = useState(false);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
+  const followingInProgress = useRef(false);
 
   useEffect(() => {
     if (!userId) {
@@ -72,14 +73,8 @@ export function useUserProfile(userId: string | undefined) {
         created_at: profileData.created_at,
       });
 
-      // Fetch counts and data in parallel
-      const [
-        followerRes,
-        followingRes,
-        isFollowingRes,
-        postsRes,
-        eventsRes,
-      ] = await Promise.all([
+      // Fetch counts and data in parallel — use Promise.allSettled so one failure doesn't block others
+      const results = await Promise.allSettled([
         supabase
           .from('follows')
           .select('id', { count: 'exact', head: true })
@@ -109,12 +104,20 @@ export function useUserProfile(userId: string | undefined) {
 
       if (cancelled) return;
 
-      setFollowerCount(followerRes.count ?? 0);
-      setFollowingCount(followingRes.count ?? 0);
-      setIsFollowing(!!isFollowingRes.data);
+      const [followerRes, followingRes, isFollowingRes, postsRes, eventsRes] = results;
 
-      if (postsRes.data) {
-        const mapped: PostWithAuthor[] = (postsRes.data as any[]).map((row) => ({
+      if (followerRes.status === 'fulfilled') {
+        setFollowerCount(followerRes.value.count ?? 0);
+      }
+      if (followingRes.status === 'fulfilled') {
+        setFollowingCount(followingRes.value.count ?? 0);
+      }
+      if (isFollowingRes.status === 'fulfilled') {
+        setIsFollowing(!!isFollowingRes.value.data);
+      }
+
+      if (postsRes.status === 'fulfilled' && postsRes.value.data) {
+        const mapped: PostWithAuthor[] = (postsRes.value.data as any[]).map((row) => ({
           id: row.id,
           author_id: row.author_id,
           content: row.content,
@@ -128,8 +131,8 @@ export function useUserProfile(userId: string | undefined) {
         setPosts(mapped);
       }
 
-      if (eventsRes.data) {
-        const allEvents = eventsRes.data
+      if (eventsRes.status === 'fulfilled' && eventsRes.value.data) {
+        const allEvents = eventsRes.value.data
           .map((r: any) => r.events as EventRow)
           .filter((e): e is EventRow => !!e);
         setEvents(allEvents);
@@ -147,35 +150,42 @@ export function useUserProfile(userId: string | undefined) {
 
   const toggleFollow = useCallback(async () => {
     if (!user || !userId || user.id === userId) return;
+    // Prevent rapid clicks
+    if (followingInProgress.current) return;
+    followingInProgress.current = true;
 
-    if (isFollowing) {
-      // Optimistic unfollow
-      setIsFollowing(false);
-      setFollowerCount((c) => Math.max(0, c - 1));
-
-      const { error } = await supabase
-        .from('follows')
-        .delete()
-        .eq('follower_id', user.id)
-        .eq('following_id', userId);
-
-      if (error) {
-        setIsFollowing(true);
-        setFollowerCount((c) => c + 1);
-      }
-    } else {
-      // Optimistic follow
-      setIsFollowing(true);
-      setFollowerCount((c) => c + 1);
-
-      const { error } = await supabase
-        .from('follows')
-        .insert({ follower_id: user.id, following_id: userId });
-
-      if (error) {
+    try {
+      if (isFollowing) {
+        // Optimistic unfollow
         setIsFollowing(false);
         setFollowerCount((c) => Math.max(0, c - 1));
+
+        const { error } = await supabase
+          .from('follows')
+          .delete()
+          .eq('follower_id', user.id)
+          .eq('following_id', userId);
+
+        if (error) {
+          setIsFollowing(true);
+          setFollowerCount((c) => c + 1);
+        }
+      } else {
+        // Optimistic follow
+        setIsFollowing(true);
+        setFollowerCount((c) => c + 1);
+
+        const { error } = await supabase
+          .from('follows')
+          .insert({ follower_id: user.id, following_id: userId });
+
+        if (error) {
+          setIsFollowing(false);
+          setFollowerCount((c) => Math.max(0, c - 1));
+        }
       }
+    } finally {
+      followingInProgress.current = false;
     }
   }, [user, userId, isFollowing]);
 

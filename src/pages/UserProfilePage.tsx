@@ -288,7 +288,7 @@ export default function UserProfilePage() {
         </div>
 
         {/* ── Tab Navigation ──────────────────────────────────── */}
-        <div className="relative flex border-b border-white/[0.06] mb-8">
+        <div className="relative flex overflow-x-auto border-b border-white/[0.06] mb-8">
           {tabs.map((t) => {
             const Icon = t.icon;
             const isActive = activeTab === t.key;
@@ -444,7 +444,7 @@ export default function UserProfilePage() {
                           </div>
                           <div className="flex items-center justify-between pt-3 border-t border-white/[0.05]">
                             <div className="flex flex-wrap gap-1.5">
-                              {event.distance_tags.slice(0, 3).map((tag) => (
+                              {(event.distance_tags ?? []).slice(0, 3).map((tag) => (
                                 <span
                                   key={tag}
                                   className="px-2.5 py-0.5 rounded-md text-[10px] font-inter font-bold bg-accent/10 text-accent"
@@ -454,7 +454,7 @@ export default function UserProfilePage() {
                               ))}
                             </div>
                             <span className="font-inter font-semibold text-[14px] text-[#F5F5F0]/70">
-                              {'₹'}{event.price.toLocaleString('en-IN')}
+                              {'₹'}{(event.price ?? 0).toLocaleString('en-IN')}
                             </span>
                           </div>
                         </div>
