@@ -122,7 +122,7 @@ function PostCard({
 
   return (
     <div
-      className="rounded-2xl overflow-hidden transition-all duration-300"
+      className="rounded-2xl transition-all duration-300"
       style={{ background: '#222', border: '1px solid rgba(255,255,255,0.06)' }}
     >
       <div className="p-6">
