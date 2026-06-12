@@ -17,6 +17,10 @@ export default function EventsPage() {
   const [searchParams] = useSearchParams();
   const initialCity = searchParams.get('city') ?? '';
   const initialSport = searchParams.get('sport') ?? '';
+  const initialDistances = (searchParams.get('distance') ?? '')
+    .split(',')
+    .map((d) => d.trim())
+    .filter(Boolean);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [showPast, setShowPast] = useState(false);
 
@@ -26,6 +30,7 @@ export default function EventsPage() {
   const { events, loading, error, filters, setFilters } = useEvents({
     city: initialCity,
     sport: initialSport,
+    distanceTags: initialDistances,
   });
 
   // Reset pagination when filters change

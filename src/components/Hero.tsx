@@ -39,6 +39,12 @@ const sportOptions = [
   { value: 'cycling', label: 'Cycling', Icon: Bike },
 ];
 
+/* Distance options per sport — values match event distance_tags */
+const DISTANCE_OPTIONS: Record<string, string[]> = {
+  running: ['5K', '10K', '12K', 'Half Marathon', 'Full Marathon', '50 km'],
+  cycling: ['50 km', '100 km', '200 km'],
+};
+
 export default function Hero() {
   const navigate = useNavigate();
   const [city, setCity] = useState('');
@@ -46,8 +52,20 @@ export default function Hero() {
   const [cityOpen, setCityOpen] = useState(false);
   const cityRef = useRef<HTMLDivElement>(null);
   const [sport, setSport] = useState('all');
+  const [distances, setDistances] = useState<string[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [animating, setAnimating] = useState(false);
+
+  const handleSportChange = (value: string) => {
+    setSport(value);
+    setDistances([]); // reset distances when sport changes
+  };
+
+  const toggleDistance = (d: string) => {
+    setDistances((prev) =>
+      prev.includes(d) ? prev.filter((x) => x !== d) : [...prev, d],
+    );
+  };
 
   const advance = useCallback(() => {
     setAnimating(true);
@@ -81,6 +99,7 @@ export default function Hero() {
     const params = new URLSearchParams();
     if (city.trim()) params.set('city', city.trim());
     if (sport !== 'all') params.set('sport', sport);
+    if (distances.length > 0) params.set('distance', distances.join(','));
     navigate(`/events${params.toString() ? `?${params}` : ''}`);
   };
 
@@ -247,7 +266,7 @@ export default function Hero() {
                 {sportOptions.map((s) => (
                   <button
                     key={s.value}
-                    onClick={() => setSport(s.value)}
+                    onClick={() => handleSportChange(s.value)}
                     className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-inter font-medium transition-all duration-300 whitespace-nowrap ${
                       sport === s.value
                         ? 'bg-accent text-black'
@@ -270,6 +289,28 @@ export default function Hero() {
               Search
             </button>
           </div>
+
+          {/* Distance pills — shown when a specific sport is selected */}
+          {sport !== 'all' && DISTANCE_OPTIONS[sport] && (
+            <div className="flex items-center gap-2 flex-wrap mt-4 px-2 animate-fade-in-up">
+              <span className="text-[9px] font-inter font-bold uppercase tracking-[0.2em] text-white/25 mr-1">
+                Distance
+              </span>
+              {DISTANCE_OPTIONS[sport].map((d) => (
+                <button
+                  key={d}
+                  onClick={() => toggleDistance(d)}
+                  className={`px-3.5 py-1.5 rounded-full text-xs font-inter font-medium transition-all duration-300 whitespace-nowrap border ${
+                    distances.includes(d)
+                      ? 'bg-accent text-black border-accent'
+                      : 'bg-black/40 backdrop-blur-md text-white/50 border-white/[0.1] hover:bg-white/[0.08] hover:text-white/75'
+                  }`}
+                >
+                  {d}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
