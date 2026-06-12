@@ -194,7 +194,7 @@ export default function Hero() {
                 />
               </div>
               {cityOpen && (
-                <div className="absolute top-full left-0 mt-2 w-full max-h-60 overflow-y-auto rounded-xl border border-white/[0.1] bg-[#1a1a1a]/95 backdrop-blur-xl shadow-2xl shadow-black/40 z-50">
+                <div className="absolute bottom-full left-0 mb-3 w-full max-h-72 overflow-y-auto rounded-xl border border-white/[0.1] bg-[#1a1a1a]/95 backdrop-blur-xl shadow-2xl shadow-black/40 z-50">
                   {/* All Cities option */}
                   <button
                     type="button"
