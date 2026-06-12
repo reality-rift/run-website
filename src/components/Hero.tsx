@@ -119,7 +119,7 @@ export default function Hero() {
       </div>
 
       {/* Main content */}
-      <div className="relative h-full flex flex-col justify-end pb-32 px-6 md:px-12 max-w-content mx-auto z-[7]">
+      <div className="relative h-full flex flex-col justify-end pb-32 px-6 md:px-12 max-w-content mx-auto z-[9]">
         {/* Eyebrow label */}
         <div className="animate-fade-in-up mb-6">
           <span className="inline-flex items-center gap-3 text-[10px] font-inter font-bold uppercase tracking-[0.3em] text-white/30">
@@ -168,7 +168,7 @@ export default function Hero() {
         </h1>
 
         {/* Search bar */}
-        <div className="mt-12 animate-fade-in-up animation-delay-200">
+        <div className="mt-12 animate-fade-in-up animation-delay-200 relative z-[20]">
           <div className="glass rounded-2xl md:rounded-full p-4 md:p-2 flex flex-col md:flex-row items-stretch gap-3 md:gap-0 max-w-3xl shadow-2xl shadow-black/20">
             {/* City search */}
             <div ref={cityRef} className="flex-1 px-5 flex flex-col justify-center h-14 group relative">

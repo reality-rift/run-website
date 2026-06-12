@@ -47,6 +47,11 @@ function EventListCard({
     e.preventDefault();
     e.stopPropagation();
     if (!user) { navigate('/login'); return; }
+    // Open external registration portal when provided (only when registering)
+    const portalUrl = event.registration_url || event.website_url;
+    if (!registered && portalUrl) {
+      window.open(portalUrl, '_blank', 'noopener');
+    }
     onToggleRegister(event.id);
   };
 

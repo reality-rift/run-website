@@ -22,6 +22,8 @@ import CreateEventPage from './pages/CreateEventPage';
 import AdminPage from './pages/admin/AdminPage';
 import CommunityPage from './pages/CommunityPage';
 import UserProfilePage from './pages/UserProfilePage';
+import ExpertsPage from './pages/ExpertsPage';
+import ExpertArticlePage from './pages/ExpertArticlePage';
 import NotFoundPage from './pages/NotFoundPage';
 import PrivacyPage from './pages/PrivacyPage';
 import TermsPage from './pages/TermsPage';
@@ -60,6 +62,8 @@ export default function App() {
                 <Route path="/user/:userId" element={<UserProfilePage />} />
                 <Route path="/editorial" element={<EditorialPage />} />
                 <Route path="/editorial/:slug" element={<ArticlePage />} />
+                <Route path="/experts" element={<ExpertsPage />} />
+                <Route path="/experts/:id" element={<ExpertArticlePage />} />
                 <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
                 <Route path="/create-event" element={<OrganizerRoute><CreateEventPage /></OrganizerRoute>} />
                 <Route path="/admin" element={<AdminRoute><AdminPage /></AdminRoute>} />

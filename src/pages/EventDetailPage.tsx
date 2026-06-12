@@ -11,6 +11,8 @@ import {
   Ticket,
   Globe,
   Phone,
+  ExternalLink,
+  HeartHandshake,
 } from 'lucide-react';
 import { useEvent } from '../hooks/useEvent';
 import { useSavedEvents } from '../hooks/useSavedEvents';
@@ -63,6 +65,69 @@ export default function EventDetailPage() {
   const { isRegistered, toggleRegistration } = useRegistrations();
   const { toast } = useToast();
   const [relatedEvents, setRelatedEvents] = useState<EventRow[]>([]);
+  const [volunteerCount, setVolunteerCount] = useState(0);
+  const [isVolunteering, setIsVolunteering] = useState(false);
+  const [volunteerBusy, setVolunteerBusy] = useState(false);
+
+  // Load volunteer info
+  useEffect(() => {
+    if (!id) return;
+    let cancelled = false;
+    supabase
+      .from('event_volunteers')
+      .select('user_id')
+      .eq('event_id', id)
+      .then(({ data }) => {
+        if (cancelled || !data) return;
+        setVolunteerCount(data.length);
+        setIsVolunteering(!!user && data.some((v) => v.user_id === user.id));
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [id, user]);
+
+  const handleVolunteer = async () => {
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+    if (!id || volunteerBusy) return;
+    setVolunteerBusy(true);
+    try {
+      if (isVolunteering) {
+        // Optimistic withdraw
+        setIsVolunteering(false);
+        setVolunteerCount((c) => Math.max(0, c - 1));
+        const { error } = await supabase
+          .from('event_volunteers')
+          .delete()
+          .eq('event_id', id)
+          .eq('user_id', user.id);
+        if (error) {
+          setIsVolunteering(true);
+          setVolunteerCount((c) => c + 1);
+        } else {
+          toast('Volunteer signup withdrawn');
+        }
+      } else {
+        // Optimistic signup
+        setIsVolunteering(true);
+        setVolunteerCount((c) => c + 1);
+        const { error } = await supabase
+          .from('event_volunteers')
+          .insert({ event_id: id, user_id: user.id });
+        if (error) {
+          setIsVolunteering(false);
+          setVolunteerCount((c) => Math.max(0, c - 1));
+        } else {
+          toast("You're signed up to volunteer! 🙌");
+        }
+      }
+    } finally {
+      setVolunteerBusy(false);
+    }
+  };
 
   useEffect(() => {
     if (!event) return;
@@ -100,15 +165,22 @@ export default function EventDetailPage() {
       const wasRegistered = isRegistered(id);
       await toggleRegistration(id);
       if (!wasRegistered) {
-        const calUrl = buildGoogleCalendarUrl({
-          title: event.title,
-          description: event.description,
-          date: event.date,
-          city: event.city,
-          state: event.state,
-        });
-        window.open(calUrl, '_blank', 'noopener');
-        toast('Registered! Opening Google Calendar...');
+        const portalUrl = event.registration_url || event.website_url;
+        if (portalUrl) {
+          // Redirect to the organizer's registration portal
+          window.open(portalUrl, '_blank', 'noopener');
+          toast('Opening registration portal...');
+        } else {
+          const calUrl = buildGoogleCalendarUrl({
+            title: event.title,
+            description: event.description,
+            date: event.date,
+            city: event.city,
+            state: event.state,
+          });
+          window.open(calUrl, '_blank', 'noopener');
+          toast('Registered! Opening Google Calendar...');
+        }
       } else {
         toast('Registration cancelled');
       }
@@ -372,13 +444,16 @@ export default function EventDetailPage() {
                 {/* Register Button */}
                 <button
                   onClick={handleRegister}
-                  className={`w-full py-4 rounded-full font-syne font-bold text-sm uppercase tracking-wider transition-all duration-300 active:scale-[0.97] mb-3 ${
+                  className={`w-full py-4 rounded-full font-syne font-bold text-sm uppercase tracking-wider transition-all duration-300 active:scale-[0.97] mb-3 flex items-center justify-center gap-2 ${
                     registered
                       ? 'bg-accent/8 text-accent border border-accent/25'
                       : 'bg-accent text-black hover:brightness-110 hover:shadow-[0_6px_24px_rgba(255,59,16,0.3)]'
                   }`}
                 >
                   {registered ? 'Registered' : 'Register Now'}
+                  {!registered && (event.registration_url || event.website_url) && (
+                    <ExternalLink className="w-4 h-4" />
+                  )}
                 </button>
 
                 {/* Google Calendar Button */}
@@ -424,6 +499,27 @@ export default function EventDetailPage() {
                     <Share2 className="w-4 h-4" />
                     Share
                   </button>
+                </div>
+
+                {/* Volunteer */}
+                <div className="mt-3 pt-4 border-t border-white/[0.06]">
+                  <button
+                    onClick={handleVolunteer}
+                    disabled={volunteerBusy}
+                    className={`w-full flex items-center justify-center gap-2.5 py-3.5 rounded-full border font-inter text-sm transition-all duration-300 ${
+                      isVolunteering
+                        ? 'border-accent/30 text-accent bg-accent/8'
+                        : 'border-white/[0.12] text-white/55 hover:border-accent/40 hover:text-accent hover:bg-accent/5'
+                    }`}
+                  >
+                    <HeartHandshake className="w-4 h-4" />
+                    {isVolunteering ? "You're volunteering ✓" : 'Volunteer for this event'}
+                  </button>
+                  <p className="text-center text-[11px] font-inter text-white/30 mt-2">
+                    {volunteerCount === 0
+                      ? 'Be the first to volunteer'
+                      : `${volunteerCount} ${volunteerCount === 1 ? 'volunteer' : 'volunteers'} signed up`}
+                  </p>
                 </div>
               </div>
 

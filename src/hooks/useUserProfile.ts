@@ -10,6 +10,8 @@ interface UserProfile {
   avatar_url: string | null;
   role: ProfileRow['role'];
   location: string;
+  runner_level: ProfileRow['runner_level'];
+  achievements: string[];
   created_at: string;
 }
 
@@ -51,7 +53,7 @@ export function useUserProfile(userId: string | undefined) {
       // Fetch profile
       const { data: profileData, error: profileError } = await supabase
         .from('profiles')
-        .select('id, display_name, bio, avatar_url, role, location, created_at')
+        .select('id, display_name, bio, avatar_url, role, location, runner_level, achievements, created_at')
         .eq('id', userId)
         .maybeSingle();
 
@@ -70,6 +72,8 @@ export function useUserProfile(userId: string | undefined) {
         avatar_url: profileData.avatar_url || null,
         role: profileData.role,
         location: profileData.location || '',
+        runner_level: profileData.runner_level || 'beginner',
+        achievements: profileData.achievements || [],
         created_at: profileData.created_at,
       });
 

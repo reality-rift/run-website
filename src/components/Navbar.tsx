@@ -7,6 +7,7 @@ const baseLinks = [
   { label: 'Calendar', to: '/#calendar' },
   { label: 'Events', to: '/events' },
   { label: 'Community', to: '/community' },
+  { label: 'Experts', to: '/experts' },
   { label: 'Editorial', to: '/editorial' },
 ];
 

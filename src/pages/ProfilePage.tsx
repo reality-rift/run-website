@@ -15,7 +15,24 @@ import {
   CheckCircle2,
   XCircle,
   Camera,
+  Phone,
+  Award,
+  Trophy,
 } from 'lucide-react';
+
+type RunnerLevel = 'beginner' | 'amateur' | 'pro';
+
+const RUNNER_LEVELS: { key: RunnerLevel; label: string }[] = [
+  { key: 'beginner', label: 'Beginner' },
+  { key: 'amateur', label: 'Amateur' },
+  { key: 'pro', label: 'Pro' },
+];
+
+const LEVEL_BADGE: Record<RunnerLevel, string> = {
+  beginner: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20',
+  amateur: 'bg-sky-500/10 text-sky-400 border-sky-500/20',
+  pro: 'bg-accent/10 text-accent border-accent/20',
+};
 import { useAuth } from '../contexts/AuthContext';
 import { supabase, type EventRow } from '../lib/supabase';
 import { resolveImageUrl } from '../lib/imageUrl';
@@ -41,6 +58,17 @@ export default function ProfilePage() {
   const [uploadingAvatar, setUploadingAvatar] = useState(false);
   const [profileAvatarUrl, setProfileAvatarUrl] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Enhanced profile fields
+  const [profileBio, setProfileBio] = useState('');
+  const [profilePhone, setProfilePhone] = useState('');
+  const [profileLevel, setProfileLevel] = useState<RunnerLevel>('beginner');
+  const [profileAchievements, setProfileAchievements] = useState<string[]>([]);
+  const [editBio, setEditBio] = useState('');
+  const [editPhone, setEditPhone] = useState('');
+  const [editLevel, setEditLevel] = useState<RunnerLevel>('beginner');
+  const [editAchievements, setEditAchievements] = useState<string[]>([]);
+  const [achievementInput, setAchievementInput] = useState('');
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -90,16 +118,21 @@ export default function ProfilePage() {
     });
   }, [user]);
 
-  // Fetch profile avatar_url from profiles table
+  // Fetch profile fields from profiles table
   useEffect(() => {
     if (!user) return;
     supabase
       .from('profiles')
-      .select('avatar_url')
+      .select('avatar_url, bio, phone, runner_level, achievements')
       .eq('id', user.id)
       .maybeSingle()
       .then(({ data }) => {
-        if (data?.avatar_url) setProfileAvatarUrl(data.avatar_url);
+        if (!data) return;
+        if (data.avatar_url) setProfileAvatarUrl(data.avatar_url);
+        setProfileBio(data.bio || '');
+        setProfilePhone(data.phone || '');
+        setProfileLevel((data.runner_level as RunnerLevel) || 'beginner');
+        setProfileAchievements(data.achievements || []);
       });
   }, [user]);
 
@@ -166,7 +199,23 @@ export default function ProfilePage() {
 
   const handleStartEdit = () => {
     setEditName(displayName);
+    setEditBio(profileBio);
+    setEditPhone(profilePhone);
+    setEditLevel(profileLevel);
+    setEditAchievements(profileAchievements);
+    setAchievementInput('');
     setEditing(true);
+  };
+
+  const addAchievement = () => {
+    const a = achievementInput.trim();
+    if (!a || editAchievements.includes(a) || editAchievements.length >= 12) return;
+    setEditAchievements((prev) => [...prev, a]);
+    setAchievementInput('');
+  };
+
+  const removeAchievement = (idx: number) => {
+    setEditAchievements((prev) => prev.filter((_, i) => i !== idx));
   };
 
   const handleSaveProfile = async () => {
@@ -181,8 +230,18 @@ export default function ProfilePage() {
     if (!error) {
       await supabase
         .from('profiles')
-        .update({ display_name: trimmed })
+        .update({
+          display_name: trimmed,
+          bio: editBio.trim(),
+          phone: editPhone.trim(),
+          runner_level: editLevel,
+          achievements: editAchievements,
+        })
         .eq('id', user.id);
+      setProfileBio(editBio.trim());
+      setProfilePhone(editPhone.trim());
+      setProfileLevel(editLevel);
+      setProfileAchievements(editAchievements);
       toast('Profile updated');
     } else {
       toast('Failed to update profile');
@@ -249,50 +308,173 @@ export default function ProfilePage() {
             {/* Name & email */}
             <div className="flex-1 min-w-0">
               {editing ? (
-                <div className="flex items-center gap-3">
+                <div className="space-y-4 max-w-xl">
                   <input
                     type="text"
                     value={editName}
                     onChange={(e) => setEditName(e.target.value)}
                     onKeyDown={(e) => {
-                      if (e.key === 'Enter') handleSaveProfile();
                       if (e.key === 'Escape') setEditing(false);
                     }}
-                    className="bg-white/[0.04] border border-white/10 rounded-xl px-5 py-3 text-xl font-syne font-bold text-[#F5F5F0] outline-none focus:border-accent/40 focus:bg-white/[0.06] transition-all w-72"
+                    placeholder="Display name"
+                    className="bg-white/[0.04] border border-white/10 rounded-xl px-5 py-3 text-xl font-syne font-bold text-[#F5F5F0] outline-none focus:border-accent/40 focus:bg-white/[0.06] transition-all w-full"
                     autoFocus
                   />
-                  <button
-                    onClick={handleSaveProfile}
-                    disabled={saving}
-                    className="w-10 h-10 rounded-xl bg-accent flex items-center justify-center text-black hover:brightness-110 transition-all disabled:opacity-50"
-                  >
-                    {saving ? (
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                    ) : (
-                      <Check className="w-4 h-4" />
+                  <textarea
+                    value={editBio}
+                    onChange={(e) => setEditBio(e.target.value)}
+                    placeholder="Bio — tell the community about yourself..."
+                    rows={3}
+                    maxLength={300}
+                    className="bg-white/[0.04] border border-white/10 rounded-xl px-5 py-3 text-sm font-inter text-white/80 outline-none focus:border-accent/40 transition-all w-full resize-none"
+                  />
+                  <input
+                    type="tel"
+                    value={editPhone}
+                    onChange={(e) => setEditPhone(e.target.value)}
+                    placeholder="Mobile number"
+                    maxLength={15}
+                    className="bg-white/[0.04] border border-white/10 rounded-xl px-5 py-3 text-sm font-inter text-white/80 outline-none focus:border-accent/40 transition-all w-full"
+                  />
+                  {/* Runner level */}
+                  <div>
+                    <span className="block font-inter text-[10px] font-bold uppercase tracking-[0.2em] text-white/30 mb-2">
+                      Runner Level
+                    </span>
+                    <div className="flex gap-2">
+                      {RUNNER_LEVELS.map((l) => (
+                        <button
+                          key={l.key}
+                          type="button"
+                          onClick={() => setEditLevel(l.key)}
+                          className={`px-5 py-2 rounded-full text-xs font-inter font-bold uppercase tracking-wider transition-all duration-300 border ${
+                            editLevel === l.key
+                              ? LEVEL_BADGE[l.key]
+                              : 'bg-white/[0.03] text-white/35 border-white/[0.08] hover:text-white/60'
+                          }`}
+                        >
+                          {l.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  {/* Achievements */}
+                  <div>
+                    <span className="block font-inter text-[10px] font-bold uppercase tracking-[0.2em] text-white/30 mb-2">
+                      Achievements
+                    </span>
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={achievementInput}
+                        onChange={(e) => setAchievementInput(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') {
+                            e.preventDefault();
+                            addAchievement();
+                          }
+                        }}
+                        placeholder="e.g. Finished Mumbai Half Marathon 2025"
+                        maxLength={80}
+                        className="bg-white/[0.04] border border-white/10 rounded-xl px-4 py-2.5 text-sm font-inter text-white/80 outline-none focus:border-accent/40 transition-all flex-1"
+                      />
+                      <button
+                        type="button"
+                        onClick={addAchievement}
+                        className="px-4 py-2.5 rounded-xl bg-white/[0.06] border border-white/10 text-white/60 text-sm font-inter hover:border-accent/40 hover:text-accent transition-all"
+                      >
+                        Add
+                      </button>
+                    </div>
+                    {editAchievements.length > 0 && (
+                      <div className="flex flex-wrap gap-1.5 mt-3">
+                        {editAchievements.map((a, i) => (
+                          <span
+                            key={i}
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-inter font-semibold bg-accent/10 text-accent border border-accent/15"
+                          >
+                            <Trophy className="w-3 h-3" />
+                            {a}
+                            <button
+                              type="button"
+                              onClick={() => removeAchievement(i)}
+                              className="hover:text-red-400 transition-colors"
+                            >
+                              <X className="w-3 h-3" />
+                            </button>
+                          </span>
+                        ))}
+                      </div>
                     )}
-                  </button>
-                  <button
-                    onClick={() => setEditing(false)}
-                    className="w-10 h-10 rounded-xl border border-white/10 flex items-center justify-center text-white/30 hover:text-white/60 hover:border-white/20 transition-all"
-                  >
-                    <X className="w-4 h-4" />
-                  </button>
+                  </div>
+                  {/* Save / Cancel */}
+                  <div className="flex gap-3 pt-1">
+                    <button
+                      onClick={handleSaveProfile}
+                      disabled={saving || !editName.trim()}
+                      className="inline-flex items-center gap-2 px-8 py-3 rounded-xl bg-accent text-black font-syne font-bold text-xs uppercase tracking-wider hover:brightness-110 transition-all disabled:opacity-50"
+                    >
+                      {saving ? (
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                      ) : (
+                        <Check className="w-4 h-4" />
+                      )}
+                      Save
+                    </button>
+                    <button
+                      onClick={() => setEditing(false)}
+                      className="px-6 py-3 rounded-xl border border-white/10 text-white/40 font-inter text-sm hover:text-white/70 hover:border-white/20 transition-all"
+                    >
+                      Cancel
+                    </button>
+                  </div>
                 </div>
               ) : (
-                <div className="flex items-center gap-4">
-                  <h1 className="font-syne font-bold text-4xl text-[#F5F5F0] tracking-tight">
-                    {displayName}
-                  </h1>
-                  <button
-                    onClick={handleStartEdit}
-                    className="w-9 h-9 rounded-xl border border-white/[0.06] flex items-center justify-center text-white/20 hover:text-accent hover:border-accent/30 hover:bg-accent/5 transition-all"
-                  >
-                    <Pencil className="w-3.5 h-3.5" />
-                  </button>
-                </div>
+                <>
+                  <div className="flex items-center gap-4 flex-wrap">
+                    <h1 className="font-syne font-bold text-4xl text-[#F5F5F0] tracking-tight">
+                      {displayName}
+                    </h1>
+                    <span
+                      className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-inter font-bold border ${LEVEL_BADGE[profileLevel]}`}
+                    >
+                      <Award className="w-3 h-3" />
+                      {RUNNER_LEVELS.find((l) => l.key === profileLevel)?.label}
+                    </span>
+                    <button
+                      onClick={handleStartEdit}
+                      className="w-9 h-9 rounded-xl border border-white/[0.06] flex items-center justify-center text-white/20 hover:text-accent hover:border-accent/30 hover:bg-accent/5 transition-all"
+                    >
+                      <Pencil className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                  <p className="font-inter text-sm text-white/35 mt-2 tracking-wide">{user.email}</p>
+                  {profilePhone && (
+                    <p className="flex items-center gap-1.5 font-inter text-sm text-white/35 mt-1">
+                      <Phone className="w-3.5 h-3.5" />
+                      {profilePhone}
+                    </p>
+                  )}
+                  {profileBio && (
+                    <p className="font-inter text-sm text-white/50 mt-3 max-w-xl leading-relaxed">
+                      {profileBio}
+                    </p>
+                  )}
+                  {profileAchievements.length > 0 && (
+                    <div className="flex flex-wrap gap-1.5 mt-4">
+                      {profileAchievements.map((a, i) => (
+                        <span
+                          key={i}
+                          className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-[11px] font-inter font-semibold bg-accent/10 text-accent border border-accent/15"
+                        >
+                          <Trophy className="w-3 h-3" />
+                          {a}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </>
               )}
-              <p className="font-inter text-sm text-white/35 mt-2 tracking-wide">{user.email}</p>
             </div>
 
             {/* Sign out */}

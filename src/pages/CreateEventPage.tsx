@@ -275,6 +275,7 @@ export default function CreateEventPage() {
         location_lng: form.locationLng,
         image_url: form.imageUrl.trim(),
         website_url: form.websiteUrl.trim(),
+        registration_url: form.websiteUrl.trim(),
         contact_info: form.contactInfo.trim(),
         social_links: form.socialLinks,
         accept_volunteers: form.acceptVolunteers,

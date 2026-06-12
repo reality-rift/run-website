@@ -33,6 +33,7 @@ export interface EventRow {
   location_address: string;
   location_lat: number | null;
   location_lng: number | null;
+  registration_url: string;
   created_at: string;
 }
 
@@ -53,6 +54,25 @@ export interface ProfileRow {
   privacy_accepted: boolean;
   bio: string;
   avatar_url: string;
+  runner_level: 'beginner' | 'amateur' | 'pro';
+  achievements: string[];
+  created_at: string;
+}
+
+export interface ExpertArticleRow {
+  id: string;
+  title: string;
+  content: string;
+  category: 'plans' | 'workouts' | 'tips';
+  image_url: string;
+  author_id: string | null;
+  created_at: string;
+}
+
+export interface EventVolunteerRow {
+  id: string;
+  event_id: string;
+  user_id: string;
   created_at: string;
 }
 

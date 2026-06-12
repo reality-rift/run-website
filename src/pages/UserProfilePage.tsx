@@ -12,7 +12,24 @@ import {
   Info,
   Shield,
   ArrowLeft,
+  Award,
+  Medal,
 } from 'lucide-react';
+
+const LEVEL_META: Record<string, { label: string; classes: string }> = {
+  beginner: {
+    label: 'Beginner',
+    classes: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20',
+  },
+  amateur: {
+    label: 'Amateur',
+    classes: 'bg-sky-500/10 text-sky-400 border-sky-500/20',
+  },
+  pro: {
+    label: 'Pro',
+    classes: 'bg-accent/10 text-accent border-accent/20',
+  },
+};
 import { useUserProfile } from '../hooks/useUserProfile';
 import { usePostInteractions } from '../hooks/usePostInteractions';
 import { useAuth } from '../contexts/AuthContext';
@@ -252,6 +269,14 @@ export default function UserProfilePage() {
                 {profile.role === 'admin' ? 'Admin' : 'Organizer'}
               </span>
             )}
+            <span
+              className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-inter font-bold border ${
+                (LEVEL_META[profile.runner_level] ?? LEVEL_META.beginner).classes
+              }`}
+            >
+              <Award className="w-3 h-3" />
+              {(LEVEL_META[profile.runner_level] ?? LEVEL_META.beginner).label}
+            </span>
           </div>
 
           {profile.bio && (
@@ -523,6 +548,38 @@ export default function UserProfilePage() {
                       <span className="font-inter text-sm text-[#F5F5F0]/80 capitalize">
                         {profile.role}
                       </span>
+                    </div>
+                  </div>
+                )}
+                <div className="flex items-center gap-3">
+                  <Award className="w-4 h-4 text-white/25 shrink-0" />
+                  <div>
+                    <span className="block font-inter text-xs text-white/30 mb-0.5">
+                      Runner level
+                    </span>
+                    <span className="font-inter text-sm text-[#F5F5F0]/80 capitalize">
+                      {profile.runner_level || 'beginner'}
+                    </span>
+                  </div>
+                </div>
+                {profile.achievements.length > 0 && (
+                  <div className="flex items-start gap-3">
+                    <Medal className="w-4 h-4 text-white/25 shrink-0 mt-0.5" />
+                    <div>
+                      <span className="block font-inter text-xs text-white/30 mb-2">
+                        Achievements
+                      </span>
+                      <div className="flex flex-wrap gap-1.5">
+                        {profile.achievements.map((a, i) => (
+                          <span
+                            key={i}
+                            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-[11px] font-inter font-semibold bg-accent/10 text-accent border border-accent/15"
+                          >
+                            <Trophy className="w-3 h-3" />
+                            {a}
+                          </span>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 )}
