@@ -538,8 +538,16 @@ export default function EventDetailPage() {
                 >
                   View all events in {event.city} &rarr;
                 </Link>
+                {event.location_address && (
+                  <p className="font-inter text-xs text-white/40 mt-2 leading-relaxed">
+                    {event.location_address}
+                  </p>
+                )}
                 <a
-                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(event.city + (event.state ? ', ' + event.state : '') + ', India')}`}
+                  href={
+                    event.location_map_url ||
+                    `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent((event.location_address || event.city + (event.state ? ', ' + event.state : '')) + ', India')}`
+                  }
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 text-xs font-inter text-accent/80 hover:text-accent transition-colors duration-300 mt-2"

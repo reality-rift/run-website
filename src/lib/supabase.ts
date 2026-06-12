@@ -33,6 +33,7 @@ export interface EventRow {
   location_address: string;
   location_lat: number | null;
   location_lng: number | null;
+  location_map_url: string;
   registration_url: string;
   created_at: string;
 }

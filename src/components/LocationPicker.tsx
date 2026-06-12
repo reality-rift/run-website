@@ -1,206 +1,164 @@
-import { useEffect, useRef, useState, useCallback } from 'react';
-import { MapPin, Search, Navigation, X } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { MapPin, Navigation, X, Link2, Check } from 'lucide-react';
 
 interface LocationPickerProps {
   address: string;
   lat: number | null;
   lng: number | null;
+  mapUrl: string;
   onLocationChange: (address: string, lat: number | null, lng: number | null) => void;
+  onMapUrlChange: (url: string) => void;
 }
 
-/* Loads the Google Maps JS SDK once */
-let loadPromise: Promise<void> | null = null;
-
-function loadGoogleMaps(): Promise<void> {
-  if (loadPromise) return loadPromise;
-  const key = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
-  if (!key) {
-    return Promise.reject(new Error('VITE_GOOGLE_MAPS_API_KEY not set'));
+/**
+ * Extract lat/lng from a Google Maps URL.
+ * Supports:
+ *  - https://www.google.com/maps/place/.../@17.385,78.4867,17z/...
+ *  - https://www.google.com/maps?q=17.385,78.4867
+ *  - URLs containing !3d17.385!4d78.4867
+ */
+function parseLatLngFromUrl(url: string): { lat: number; lng: number } | null {
+  // @lat,lng pattern
+  const atMatch = url.match(/@(-?\d{1,3}\.\d+),(-?\d{1,3}\.\d+)/);
+  if (atMatch) {
+    return { lat: parseFloat(atMatch[1]), lng: parseFloat(atMatch[2]) };
   }
-  loadPromise = new Promise((resolve, reject) => {
-    if (window.google?.maps?.places) {
-      resolve();
-      return;
-    }
-    const script = document.createElement('script');
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${key}&libraries=places`;
-    script.async = true;
-    script.onload = () => resolve();
-    script.onerror = () => reject(new Error('Failed to load Google Maps'));
-    document.head.appendChild(script);
-  });
-  return loadPromise;
+  // !3dlat!4dlng pattern (place pin — most accurate)
+  const bangMatch = url.match(/!3d(-?\d{1,3}\.\d+)!4d(-?\d{1,3}\.\d+)/);
+  if (bangMatch) {
+    return { lat: parseFloat(bangMatch[1]), lng: parseFloat(bangMatch[2]) };
+  }
+  // q=lat,lng pattern
+  const qMatch = url.match(/[?&]q=(-?\d{1,3}\.\d+),(-?\d{1,3}\.\d+)/);
+  if (qMatch) {
+    return { lat: parseFloat(qMatch[1]), lng: parseFloat(qMatch[2]) };
+  }
+  return null;
+}
+
+function isGoogleMapsUrl(url: string): boolean {
+  return /^(https?:\/\/)?(www\.)?(google\.[a-z.]+\/maps|maps\.google\.[a-z.]+|maps\.app\.goo\.gl|goo\.gl\/maps)/i.test(
+    url.trim(),
+  );
 }
 
 export default function LocationPicker({
   address,
   lat,
   lng,
+  mapUrl,
   onLocationChange,
+  onMapUrlChange,
 }: LocationPickerProps) {
-  const inputRef = useRef<HTMLInputElement>(null);
-  const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
-  const mapRef = useRef<HTMLDivElement>(null);
-  const mapInstanceRef = useRef<google.maps.Map | null>(null);
-  const markerRef = useRef<google.maps.Marker | null>(null);
+  const [linkError, setLinkError] = useState(false);
+  const debounceRef = useRef<ReturnType<typeof setTimeout>>();
 
-  const [mapsReady, setMapsReady] = useState(false);
-  const [mapsError, setMapsError] = useState(false);
-  const [query, setQuery] = useState(address);
-
+  // Parse coordinates whenever a maps link is pasted/typed
   useEffect(() => {
-    loadGoogleMaps()
-      .then(() => setMapsReady(true))
-      .catch(() => setMapsError(true));
-  }, []);
-
-  /* Initialize autocomplete once Maps is ready */
-  useEffect(() => {
-    if (!mapsReady || !inputRef.current || autocompleteRef.current) return;
-
-    const ac = new google.maps.places.Autocomplete(inputRef.current, {
-      types: ['establishment', 'geocode'],
-      componentRestrictions: { country: 'in' },
-      fields: ['formatted_address', 'geometry', 'name'],
-    });
-
-    ac.addListener('place_changed', () => {
-      const place = ac.getPlace();
-      if (!place.geometry?.location) return;
-
-      const newLat = place.geometry.location.lat();
-      const newLng = place.geometry.location.lng();
-      const newAddress = place.formatted_address || place.name || '';
-
-      setQuery(newAddress);
-      onLocationChange(newAddress, newLat, newLng);
-    });
-
-    autocompleteRef.current = ac;
-  }, [mapsReady, onLocationChange]);
-
-  /* Initialize / update map preview */
-  const updateMap = useCallback(
-    (mapLat: number, mapLng: number) => {
-      if (!mapsReady || !mapRef.current) return;
-
-      const pos = { lat: mapLat, lng: mapLng };
-
-      if (!mapInstanceRef.current) {
-        mapInstanceRef.current = new google.maps.Map(mapRef.current, {
-          center: pos,
-          zoom: 14,
-          disableDefaultUI: true,
-          zoomControl: true,
-          styles: [
-            { elementType: 'geometry', stylers: [{ color: '#1a1a1a' }] },
-            { elementType: 'labels.text.stroke', stylers: [{ color: '#1a1a1a' }] },
-            { elementType: 'labels.text.fill', stylers: [{ color: '#666666' }] },
-            { featureType: 'road', elementType: 'geometry', stylers: [{ color: '#2a2a2a' }] },
-            { featureType: 'water', elementType: 'geometry', stylers: [{ color: '#111111' }] },
-            { featureType: 'poi', elementType: 'labels', stylers: [{ visibility: 'off' }] },
-          ],
-        });
-
-        markerRef.current = new google.maps.Marker({
-          position: pos,
-          map: mapInstanceRef.current,
-          animation: google.maps.Animation.DROP,
-        });
-      } else {
-        mapInstanceRef.current.panTo(pos);
-        markerRef.current?.setPosition(pos);
-      }
-    },
-    [mapsReady],
-  );
-
-  useEffect(() => {
-    if (lat != null && lng != null) {
-      updateMap(lat, lng);
+    if (!mapUrl.trim()) {
+      setLinkError(false);
+      return;
     }
-  }, [lat, lng, updateMap]);
+    clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => {
+      const valid = isGoogleMapsUrl(mapUrl);
+      setLinkError(!valid);
+      if (valid) {
+        const coords = parseLatLngFromUrl(mapUrl);
+        if (coords) {
+          onLocationChange(address, coords.lat, coords.lng);
+        }
+      }
+    }, 400);
+    return () => clearTimeout(debounceRef.current);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mapUrl]);
 
-  const handleClear = () => {
-    setQuery('');
-    onLocationChange('', null, null);
-    if (inputRef.current) inputRef.current.value = '';
+  const handleClearLink = () => {
+    onMapUrlChange('');
+    onLocationChange(address, null, null);
+    setLinkError(false);
   };
 
-  /* Fallback: manual address input when Google Maps key isn't available */
-  if (mapsError) {
-    return (
-      <div className="space-y-4">
-        <div className="relative">
-          <MapPin className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-white/25" />
-          <input
-            type="text"
-            value={address}
-            onChange={(e) => onLocationChange(e.target.value, null, null)}
-            placeholder="Enter venue address manually..."
-            className="form-input pl-10"
-          />
-        </div>
-        <p className="text-[10px] font-inter text-yellow-400/60 leading-relaxed">
-          Google Maps autocomplete unavailable. Add <code className="bg-white/[0.06] px-1.5 py-0.5 rounded">VITE_GOOGLE_MAPS_API_KEY</code> to your .env for location search.
-        </p>
-      </div>
-    );
-  }
+  const hasCoords = lat != null && lng != null;
+  const hasValidLink = !!mapUrl.trim() && !linkError;
 
   return (
     <div className="space-y-4">
-      {/* Search input */}
+      {/* Venue address */}
       <div className="relative">
-        <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-white/25 pointer-events-none z-10" />
+        <MapPin className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-white/25 pointer-events-none" />
         <input
-          ref={inputRef}
           type="text"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder={mapsReady ? 'Search for a venue or address...' : 'Loading Google Maps...'}
-          disabled={!mapsReady}
-          className="form-input pl-10 pr-10"
+          value={address}
+          onChange={(e) => onLocationChange(e.target.value, lat, lng)}
+          placeholder="Venue name & address (e.g. Gachibowli Stadium, Hyderabad)"
+          className="form-input pl-10"
         />
-        {query && (
+      </div>
+
+      {/* Google Maps link */}
+      <div className="relative">
+        <Link2 className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-white/25 pointer-events-none" />
+        <input
+          type="url"
+          value={mapUrl}
+          onChange={(e) => onMapUrlChange(e.target.value)}
+          placeholder="Paste Google Maps link (share → copy link)"
+          className={`form-input pl-10 pr-10 ${linkError ? 'border-red-500/40' : hasValidLink ? 'border-emerald-500/30' : ''}`}
+        />
+        {mapUrl && (
           <button
             type="button"
-            onClick={handleClear}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-white/25 hover:text-white/50 transition-colors z-10"
+            onClick={handleClearLink}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-white/25 hover:text-white/50 transition-colors"
           >
             <X className="w-4 h-4" />
           </button>
         )}
       </div>
 
-      {/* Selected location info */}
-      {address && lat != null && lng != null && (
-        <div className="flex items-start gap-3 p-3.5 rounded-xl bg-accent/5 border border-accent/15">
-          <Navigation className="w-4 h-4 text-accent mt-0.5 shrink-0" />
+      {linkError && (
+        <p className="text-[10px] font-inter text-red-400/70 leading-relaxed">
+          That doesn't look like a Google Maps link. Open Google Maps → find the venue →
+          Share → Copy link.
+        </p>
+      )}
+
+      {hasValidLink && !linkError && (
+        <div className="flex items-start gap-3 p-3.5 rounded-xl bg-emerald-500/5 border border-emerald-500/15">
+          <Check className="w-4 h-4 text-emerald-400 mt-0.5 shrink-0" />
           <div className="flex-1 min-w-0">
-            <p className="font-inter text-xs text-white/60 leading-relaxed truncate">
-              {address}
+            <p className="font-inter text-xs text-white/60 leading-relaxed">
+              Google Maps link added — runners will see a "View on Google Maps" button.
             </p>
-            <p className="font-inter text-[10px] text-white/25 mt-1 tabular-nums">
-              {lat.toFixed(6)}, {lng.toFixed(6)}
-            </p>
+            {hasCoords && (
+              <p className="font-inter text-[10px] text-white/25 mt-1 tabular-nums flex items-center gap-1.5">
+                <Navigation className="w-3 h-3" />
+                Pinned at {lat!.toFixed(5)}, {lng!.toFixed(5)}
+              </p>
+            )}
           </div>
         </div>
       )}
 
-      {/* Map preview */}
-      {lat != null && lng != null && (
-        <div
-          ref={mapRef}
-          className="w-full h-48 rounded-xl overflow-hidden border border-white/[0.08]"
-        />
+      {/* Free embed preview when we have coordinates (no API key needed) */}
+      {hasCoords && (
+        <div className="w-full h-48 rounded-xl overflow-hidden border border-white/[0.08]">
+          <iframe
+            title="Venue location preview"
+            src={`https://maps.google.com/maps?q=${lat},${lng}&z=15&output=embed`}
+            className="w-full h-full"
+            style={{ border: 0, filter: 'invert(90%) hue-rotate(180deg)' }}
+            loading="lazy"
+          />
+        </div>
       )}
 
-      {/* Google Maps attribution */}
-      {!lat && (
+      {!mapUrl && !hasCoords && (
         <p className="text-[10px] font-inter text-white/20 leading-relaxed flex items-center gap-1.5">
           <MapPin className="w-3 h-3" />
-          Start typing to search for venues, parks, or addresses in India
+          Tip: open Google Maps, find your venue, tap Share and paste the link here.
         </p>
       )}
     </div>

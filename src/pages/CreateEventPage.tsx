@@ -58,6 +58,7 @@ interface FormData {
   locationAddress: string;
   locationLat: number | null;
   locationLng: number | null;
+  locationMapUrl: string;
   imageUrl: string;
   websiteUrl: string;
   contactInfo: string;
@@ -84,6 +85,7 @@ const INITIAL_FORM: FormData = {
   locationAddress: '',
   locationLat: null,
   locationLng: null,
+  locationMapUrl: '',
   imageUrl: '',
   websiteUrl: '',
   contactInfo: '',
@@ -273,6 +275,7 @@ export default function CreateEventPage() {
         location_address: form.locationAddress.trim(),
         location_lat: form.locationLat,
         location_lng: form.locationLng,
+        location_map_url: form.locationMapUrl.trim(),
         image_url: form.imageUrl.trim(),
         website_url: form.websiteUrl.trim(),
         registration_url: form.websiteUrl.trim(),
@@ -482,6 +485,7 @@ export default function CreateEventPage() {
                   address={form.locationAddress}
                   lat={form.locationLat}
                   lng={form.locationLng}
+                  mapUrl={form.locationMapUrl}
                   onLocationChange={(addr, lat, lng) => {
                     setForm((prev) => ({
                       ...prev,
@@ -489,6 +493,9 @@ export default function CreateEventPage() {
                       locationLat: lat,
                       locationLng: lng,
                     }));
+                  }}
+                  onMapUrlChange={(url) => {
+                    setForm((prev) => ({ ...prev, locationMapUrl: url }));
                   }}
                 />
               </FieldGroup>
