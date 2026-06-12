@@ -122,8 +122,8 @@ export default function Hero() {
       ))}
 
       {/* Gradient overlays */}
-      <div className="absolute inset-0 bg-gradient-to-t from-surface via-surface/60 to-surface/30 z-[5]" />
-      <div className="absolute inset-0 bg-gradient-to-r from-surface/40 to-transparent z-[5]" />
+      <div className="absolute inset-0 hero-overlay-v z-[5]" />
+      <div className="absolute inset-0 hero-overlay-h z-[5]" />
 
       {/* Slide progress indicators */}
       <div className="absolute bottom-0 left-0 right-0 z-[8] flex">
@@ -141,7 +141,7 @@ export default function Hero() {
       <div className="relative h-full flex flex-col justify-end pb-32 px-6 md:px-12 max-w-content mx-auto z-[9]">
         {/* Eyebrow label */}
         <div className="animate-fade-in-up mb-6">
-          <span className="inline-flex items-center gap-3 text-[10px] font-inter font-bold uppercase tracking-[0.3em] text-white/30">
+          <span className="hero-eyebrow inline-flex items-center gap-3 text-[10px] font-inter font-bold uppercase tracking-[0.3em]">
             <span className="w-8 h-px bg-accent/50" />
             India's Running & Cycling Hub
           </span>

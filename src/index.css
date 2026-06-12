@@ -458,3 +458,39 @@ html.light .card-shine::before {
     transparent 100%
   );
 }
+
+/* ── Hero overlays (theme-aware) ── */
+.hero-overlay-v {
+  background: linear-gradient(to top, #111111 0%, rgba(17, 17, 17, 0.6) 50%, rgba(17, 17, 17, 0.3) 100%);
+}
+
+.hero-overlay-h {
+  background: linear-gradient(to right, rgba(17, 17, 17, 0.4), transparent);
+}
+
+html.light .hero-overlay-v {
+  background: linear-gradient(to top, #f6f5f2 0%, rgba(246, 245, 242, 0.72) 40%, rgba(246, 245, 242, 0.2) 100%);
+}
+
+html.light .hero-overlay-h {
+  background: linear-gradient(to right, rgba(246, 245, 242, 0.75) 0%, rgba(246, 245, 242, 0.3) 55%, transparent 100%);
+}
+
+/* In light mode let the hero photos show through more */
+html.light .editorial-img.opacity-40 {
+  opacity: 0.8;
+}
+
+/* ── Hero eyebrow (needs contrast over photos in both themes) ── */
+.hero-eyebrow {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+html.light .hero-eyebrow {
+  color: rgba(22, 20, 15, 0.75);
+}
+
+/* ── Next-race banner + remaining hex utility overrides ── */
+html.light .bg-\[\#1a1a1a\]\/90 { background-color: rgba(255, 255, 255, 0.92); }
+html.light .hover\:bg-\[\#1a1a1a\]:hover { background-color: #ffffff; }
+html.light .hover\:bg-\[\#333\]:hover { background-color: #dedbd5; }
