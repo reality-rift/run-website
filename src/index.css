@@ -20,6 +20,7 @@
   --x333: #333;
   --x555: #555;
   --xF5F5F0: #f5f5f0;
+  --cal-day: #555;
 
   /* inline-style text tokens */
   --t444: #444;
@@ -63,6 +64,7 @@ html.light {
   --x333: #e6e3dd;
   --x555: #b3afa9;
   --xF5F5F0: #16140f;
+  --cal-day: #7a766f;
 
   --t444: #c4c1bb;
   --t666: #9a968f;

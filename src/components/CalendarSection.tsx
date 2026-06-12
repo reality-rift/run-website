@@ -196,7 +196,7 @@ export default function CalendarSection() {
                     <span
                       className="font-inter text-sm sm:text-base font-semibold transition-colors duration-200"
                       style={{
-                        color: isSel ? '#000' : has ? 'var(--xF5F5F0)' : 'var(--x333)',
+                        color: isSel ? '#000' : has ? 'var(--xF5F5F0)' : 'var(--cal-day)',
                       }}
                     >
                       {day}
