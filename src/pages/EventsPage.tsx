@@ -133,7 +133,7 @@ export default function EventsPage() {
                 <h1 className="font-playfair text-4xl md:text-5xl text-[#F5F5F0] leading-[1] tracking-[-0.02em]">
                   Upcoming Events
                 </h1>
-                <p className="text-sm font-inter mt-3 leading-relaxed max-w-md" style={{ color: '#999' }}>
+                <p className="text-sm font-inter mt-3 leading-relaxed max-w-md" style={{ color: 'var(--t999)' }}>
                   {loading
                     ? 'Searching for races across India...'
                     : `${allDisplayEvents.length} ${showPast ? 'past' : 'upcoming'} race${allDisplayEvents.length !== 1 ? 's' : ''}`}
@@ -340,7 +340,7 @@ export default function EventsPage() {
                       ? 'bg-accent text-black'
                       : 'text-white/50 hover:text-white/80'
                   }`}
-                  style={!showPast ? undefined : { border: '1px solid #333' }}
+                  style={!showPast ? undefined : { border: '1px solid var(--x333)' }}
                 >
                   Upcoming ({upcomingEvents.length})
                 </button>
@@ -351,7 +351,7 @@ export default function EventsPage() {
                       ? 'bg-accent text-black'
                       : 'text-white/50 hover:text-white/80'
                   }`}
-                  style={showPast ? undefined : { border: '1px solid #333' }}
+                  style={showPast ? undefined : { border: '1px solid var(--x333)' }}
                 >
                   <History className="w-3.5 h-3.5" />
                   Past Events ({pastEvents.length})
@@ -360,11 +360,11 @@ export default function EventsPage() {
 
               {displayEvents.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-20">
-                  <History className="w-10 h-10 mb-4" style={{ color: '#555' }} />
-                  <h3 className="font-syne font-bold text-xl mb-2" style={{ color: '#ccc' }}>
+                  <History className="w-10 h-10 mb-4" style={{ color: 'var(--x555)' }} />
+                  <h3 className="font-syne font-bold text-xl mb-2" style={{ color: 'var(--tccc)' }}>
                     {showPast ? 'No past events' : 'No upcoming events'}
                   </h3>
-                  <p className="font-inter text-sm text-center max-w-sm" style={{ color: '#777' }}>
+                  <p className="font-inter text-sm text-center max-w-sm" style={{ color: 'var(--t777)' }}>
                     {showPast
                       ? 'There are no past events matching your filters.'
                       : 'Check back soon for upcoming races, or view past events.'}
@@ -399,7 +399,7 @@ export default function EventsPage() {
 
               {/* Results footer */}
               <div className="text-center py-12">
-                <p className="text-[11px] font-inter uppercase tracking-[0.2em]" style={{ color: '#444' }}>
+                <p className="text-[11px] font-inter uppercase tracking-[0.2em]" style={{ color: 'var(--t444)' }}>
                   Showing {displayEvents.length} of {allDisplayEvents.length} {showPast ? 'past' : 'upcoming'} event{allDisplayEvents.length !== 1 ? 's' : ''}
                 </p>
               </div>

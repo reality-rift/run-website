@@ -132,7 +132,7 @@ export default function CalendarSection() {
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-6">
 
           {/* ── Calendar Card ── */}
-          <div className="rounded-2xl border border-white/[0.06] overflow-hidden" style={{ background: '#141414' }}>
+          <div className="rounded-2xl border border-white/[0.06] overflow-hidden" style={{ background: 'var(--x141414)' }}>
             {/* Month nav bar */}
             <div className="flex items-center justify-between px-6 sm:px-8 py-5">
               <button
@@ -184,7 +184,7 @@ export default function CalendarSection() {
                     onClick={() => setSelected(isSel ? null : dateISO)}
                     className="aspect-square relative flex flex-col items-center justify-center rounded-xl transition-all duration-200 group"
                     style={{
-                      background: isSel ? '#FF3B10' : has ? 'rgba(255,255,255,0.03)' : 'transparent',
+                      background: isSel ? '#FF3B10' : has ? 'var(--w003)' : 'transparent',
                       cursor: has ? 'pointer' : 'default',
                     }}
                   >
@@ -196,7 +196,7 @@ export default function CalendarSection() {
                     <span
                       className="font-inter text-sm sm:text-base font-semibold transition-colors duration-200"
                       style={{
-                        color: isSel ? '#000' : has ? '#F5F5F0' : '#333',
+                        color: isSel ? '#000' : has ? 'var(--xF5F5F0)' : 'var(--x333)',
                       }}
                     >
                       {day}
@@ -228,7 +228,7 @@ export default function CalendarSection() {
           </div>
 
           {/* ── Right Sidebar: Selected Day or Summary ── */}
-          <div className="rounded-2xl border border-white/[0.06] overflow-hidden flex flex-col" style={{ background: '#141414' }}>
+          <div className="rounded-2xl border border-white/[0.06] overflow-hidden flex flex-col" style={{ background: 'var(--x141414)' }}>
             {selected ? (
               <>
                 {/* Selected date header */}

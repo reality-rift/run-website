@@ -60,7 +60,7 @@ function SkeletonProfile() {
           <div
             key={n}
             className="rounded-2xl p-6 mb-5"
-            style={{ background: '#191919' }}
+            style={{ background: 'var(--x191919)' }}
           >
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-full bg-white/[0.04] animate-pulse" />
@@ -154,7 +154,7 @@ export default function UserProfilePage() {
           className="absolute inset-0"
           style={{
             background:
-              'linear-gradient(135deg, rgba(255,59,16,0.15) 0%, rgba(255,59,16,0.06) 35%, rgba(30,30,30,0.9) 70%, #111 100%)',
+              'linear-gradient(135deg, rgba(255,59,16,0.15) 0%, rgba(255,59,16,0.06) 35%, var(--x1e1e1e) 70%, var(--x111) 100%)',
           }}
         />
         {/* Dot pattern overlay */}
@@ -224,13 +224,13 @@ export default function UserProfilePage() {
                         }
                       : {
                           background: 'transparent',
-                          border: '1px solid rgba(255,255,255,0.15)',
-                          color: '#F5F5F0',
+                          border: '1px solid var(--w015)',
+                          color: 'var(--xF5F5F0)',
                         }
                     : {
-                        background: '#F5F5F0',
-                        border: '1px solid #F5F5F0',
-                        color: '#111',
+                        background: 'var(--xF5F5F0)',
+                        border: '1px solid var(--xF5F5F0)',
+                        color: 'var(--x111)',
                       }
                 }
               >
@@ -425,7 +425,7 @@ export default function UserProfilePage() {
                         className={`group relative rounded-2xl overflow-hidden border border-white/[0.06] hover:border-accent/25 transition-all duration-500 ${
                           isPast ? 'opacity-60' : ''
                         }`}
-                        style={{ background: '#191919' }}
+                        style={{ background: 'var(--x191919)' }}
                       >
                         <div className="relative aspect-[16/9] overflow-hidden">
                           <img
@@ -497,8 +497,8 @@ export default function UserProfilePage() {
               <div
                 className="rounded-2xl p-6 space-y-5"
                 style={{
-                  background: 'rgba(255,255,255,0.025)',
-                  border: '1px solid rgba(255,255,255,0.06)',
+                  background: 'var(--w0025)',
+                  border: '1px solid var(--w006)',
                 }}
               >
                 {profile.bio && (

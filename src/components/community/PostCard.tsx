@@ -131,7 +131,7 @@ function PostCard({
   return (
     <div
       className="rounded-2xl transition-all duration-300"
-      style={{ background: '#222', border: '1px solid rgba(255,255,255,0.06)' }}
+      style={{ background: 'var(--x222)', border: '1px solid var(--w006)' }}
     >
       <div className="p-6">
         {/* Author row */}
@@ -147,7 +147,7 @@ function PostCard({
               ) : (
                 <div
                   className="w-10 h-10 rounded-full flex items-center justify-center font-syne font-bold text-sm ring-1 ring-white/[0.06] hover:ring-accent/30 transition-all duration-300"
-                  style={{ background: '#2a2a2a', color: '#FF3B10' }}
+                  style={{ background: 'var(--x2a2a2a)', color: '#FF3B10' }}
                 >
                   {initial}
                 </div>
@@ -157,11 +157,11 @@ function PostCard({
               <Link
                 to={`/user/${post.author_id}`}
                 className="font-syne font-bold text-sm block hover:text-accent transition-colors duration-300"
-                style={{ color: '#F5F5F0' }}
+                style={{ color: 'var(--xF5F5F0)' }}
               >
                 {displayName}
               </Link>
-              <span className="font-inter text-[11px]" style={{ color: '#555' }}>
+              <span className="font-inter text-[11px]" style={{ color: 'var(--x555)' }}>
                 {relativeTime(post.created_at)}
               </span>
             </div>
@@ -172,7 +172,7 @@ function PostCard({
               <button
                 onClick={() => setMenuOpen(!menuOpen)}
                 className="w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-300 hover:bg-white/[0.06]"
-                style={{ color: '#555' }}
+                style={{ color: 'var(--x555)' }}
               >
                 <MoreHorizontal className="w-4 h-4" />
               </button>
@@ -210,7 +210,7 @@ function PostCard({
         {/* Content */}
         <p
           className="font-inter text-[15px] leading-relaxed whitespace-pre-wrap mb-4"
-          style={{ color: '#bbb' }}
+          style={{ color: 'var(--tbbb)' }}
         >
           {post.content}
         </p>
@@ -295,7 +295,7 @@ function PostCard({
           <button
             onClick={() => setShowComments(!showComments)}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-full transition-all duration-300 hover:bg-white/[0.04]"
-            style={{ color: showComments ? '#FF3B10' : '#555' }}
+            style={{ color: showComments ? '#FF3B10' : 'var(--x555)' }}
           >
             <MessageCircle className="w-4 h-4" />
             <span className="font-inter text-xs font-medium tabular-nums">
@@ -307,14 +307,14 @@ function PostCard({
           {post.likes_count > 0 && (
             <div
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-full transition-all duration-300"
-              style={{ background: liked ? 'rgba(255,59,16,0.08)' : 'rgba(255,255,255,0.03)' }}
+              style={{ background: liked ? 'rgba(255,59,16,0.08)' : 'var(--w003)' }}
             >
               <span className="text-xs">
                 {activeReaction !== null ? REACTIONS[activeReaction].emoji : '\u2764\uFE0F'}
               </span>
               <span
                 className="font-inter text-xs font-semibold tabular-nums transition-colors duration-300"
-                style={{ color: liked ? '#FF3B10' : '#555' }}
+                style={{ color: liked ? '#FF3B10' : 'var(--x555)' }}
               >
                 {post.likes_count}
               </span>

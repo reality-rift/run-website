@@ -70,7 +70,7 @@ function EventListCard({
         className={`relative flex rounded-2xl overflow-hidden transition-all duration-500 hover:shadow-[0_20px_60px_-10px_rgba(0,0,0,0.6)] ${
           isPast ? 'opacity-50 grayscale-[30%]' : ''
         }`}
-        style={{ background: '#222' }}
+        style={{ background: 'var(--x222)' }}
       >
         {/* ── Image ──────────────────────────────────────── */}
         <div className="w-[320px] shrink-0 relative overflow-hidden hidden sm:block">
@@ -126,8 +126,8 @@ function EventListCard({
                 <span className={`w-1.5 h-1.5 rounded-full ${isCycling ? 'bg-emerald-400' : 'bg-accent'}`} />
                 {event.sport}
               </span>
-              <span className="w-px h-3" style={{ background: '#555' }} />
-              <span className="inline-flex items-center gap-1 text-[11px] font-inter" style={{ color: '#aaa' }}>
+              <span className="w-px h-3" style={{ background: 'var(--x555)' }} />
+              <span className="inline-flex items-center gap-1 text-[11px] font-inter" style={{ color: 'var(--taaa)' }}>
                 <MapPin className="w-3 h-3" />
                 {event.city}{event.state ? `, ${event.state}` : ''}
               </span>
@@ -137,15 +137,15 @@ function EventListCard({
             <div className="flex items-start justify-between gap-4">
               <h2
                 className="font-syne font-bold leading-tight group-hover:text-accent transition-colors duration-300 line-clamp-2"
-                style={{ color: '#ffffff', fontSize: '22px' }}
+                style={{ color: 'var(--tfff)', fontSize: '22px' }}
               >
                 {event.title}
               </h2>
               <div className="shrink-0 text-right">
-                <span className="block font-inter font-semibold uppercase tracking-wider mb-0.5" style={{ color: '#999', fontSize: '9px' }}>
+                <span className="block font-inter font-semibold uppercase tracking-wider mb-0.5" style={{ color: 'var(--t999)', fontSize: '9px' }}>
                   Starts from
                 </span>
-                <span className="font-syne font-bold tabular-nums leading-none" style={{ color: '#ffffff', fontSize: '24px' }}>
+                <span className="font-syne font-bold tabular-nums leading-none" style={{ color: 'var(--tfff)', fontSize: '24px' }}>
                   {'\u20B9'}{event.price.toLocaleString('en-IN')}
                 </span>
               </div>
@@ -166,7 +166,7 @@ function EventListCard({
                 <span
                   key={tag}
                   className="inline-flex items-center px-3 py-1 rounded-lg text-[10px] font-inter font-medium"
-                  style={{ background: '#333', color: '#ccc', border: '1px solid #444' }}
+                  style={{ background: 'var(--x333)', color: 'var(--tccc)', border: '1px solid var(--t444)' }}
                 >
                   {tag}
                 </span>
@@ -175,7 +175,7 @@ function EventListCard({
           </div>
 
           {/* Bottom Bar */}
-          <div className="flex items-center justify-between mt-5 pt-4" style={{ borderTop: '1px solid #333' }}>
+          <div className="flex items-center justify-between mt-5 pt-4" style={{ borderTop: '1px solid var(--x333)' }}>
             <div className="flex items-center gap-3">
               <div className="flex -space-x-2">
                 {[1, 2, 3].map((n) => (
@@ -189,7 +189,7 @@ function EventListCard({
                   />
                 ))}
               </div>
-              <span className="text-[11px] font-inter font-medium" style={{ color: '#bbb' }}>
+              <span className="text-[11px] font-inter font-medium" style={{ color: 'var(--tbbb)' }}>
                 {event.interested_count > 100
                   ? `${Math.floor(event.interested_count / 100) * 100}+`
                   : event.interested_count}{' '}
@@ -204,7 +204,7 @@ function EventListCard({
                 style={
                   saved
                     ? { background: 'rgba(255,59,16,0.15)', color: '#FF3B10', border: '1px solid rgba(255,59,16,0.3)' }
-                    : { color: '#888', border: '1px solid #444' }
+                    : { color: 'var(--t888)', border: '1px solid var(--t444)' }
                 }
                 aria-label={saved ? 'Remove from shortlist' : 'Shortlist event'}
               >
@@ -226,7 +226,7 @@ function EventListCard({
                     window.open(url, '_blank', 'noopener');
                   }}
                   className="w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-300 hover:text-accent"
-                  style={{ color: '#888', border: '1px solid #444' }}
+                  style={{ color: 'var(--t888)', border: '1px solid var(--t444)' }}
                   title="Add to Google Calendar"
                   aria-label="Add to Google Calendar"
                 >

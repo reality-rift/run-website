@@ -19,7 +19,7 @@ export default function NotFoundPage() {
         <div className="absolute bottom-0 right-1/4 w-[300px] h-[300px] bg-accent/[0.02] rounded-full blur-[100px]" />
         {/* Grid lines */}
         <div className="absolute inset-0 opacity-[0.02]" style={{
-          backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)',
+          backgroundImage: 'linear-gradient(var(--w010) 1px, transparent 1px), linear-gradient(90deg, var(--w010) 1px, transparent 1px)',
           backgroundSize: '80px 80px'
         }} />
       </div>

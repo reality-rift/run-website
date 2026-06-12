@@ -6,9 +6,9 @@ export default {
       colors: {
         accent: '#FF3B10',
         surface: {
-          DEFAULT: '#111111',
-          card: '#222222',
-          'card-hover': '#2A2A2A',
+          DEFAULT: 'rgb(var(--surface-rgb) / <alpha-value>)',
+          card: 'var(--surface-card)',
+          'card-hover': 'var(--surface-card-hover)',
         },
       },
       fontFamily: {

@@ -108,7 +108,7 @@ export default function CommunityPage() {
                 <div
                   key={n}
                   className="rounded-2xl p-6"
-                  style={{ background: '#222', border: '1px solid rgba(255,255,255,0.04)' }}
+                  style={{ background: 'var(--x222)', border: '1px solid var(--w004)' }}
                 >
                   <div className="flex items-center gap-3 mb-4">
                     <div className="w-10 h-10 rounded-full bg-white/[0.04]" />
@@ -159,7 +159,7 @@ export default function CommunityPage() {
                     onClick={loadMore}
                     disabled={loadingMore}
                     className="inline-flex items-center gap-2 px-8 py-3 rounded-xl font-syne font-bold text-sm uppercase tracking-[0.08em] transition-all duration-300 hover:bg-white/[0.06]"
-                    style={{ border: '1px solid #333', color: '#aaa' }}
+                    style={{ border: '1px solid var(--x333)', color: 'var(--taaa)' }}
                   >
                     {loadingMore && <Loader2 className="w-4 h-4 animate-spin" />}
                     {loadingMore ? 'Loading...' : 'Load More'}
@@ -169,7 +169,7 @@ export default function CommunityPage() {
 
               {/* Footer */}
               <div className="text-center py-8">
-                <p className="text-[11px] font-inter uppercase tracking-[0.2em]" style={{ color: '#444' }}>
+                <p className="text-[11px] font-inter uppercase tracking-[0.2em]" style={{ color: 'var(--t444)' }}>
                   {posts.length} post{posts.length !== 1 ? 's' : ''} in the feed
                 </p>
               </div>

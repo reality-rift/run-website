@@ -25,9 +25,9 @@ export default function CreatePostForm({ onPostCreated, createPost }: CreatePost
     return (
       <div
         className="rounded-2xl p-8 text-center"
-        style={{ background: '#222', border: '1px solid rgba(255,255,255,0.06)' }}
+        style={{ background: 'var(--x222)', border: '1px solid var(--w006)' }}
       >
-        <p className="font-inter text-sm mb-4" style={{ color: '#888' }}>
+        <p className="font-inter text-sm mb-4" style={{ color: 'var(--t888)' }}>
           Join the conversation
         </p>
         <Link
@@ -94,7 +94,7 @@ export default function CreatePostForm({ onPostCreated, createPost }: CreatePost
     <form
       onSubmit={handleSubmit}
       className="rounded-2xl overflow-hidden"
-      style={{ background: '#222', border: '1px solid rgba(255,255,255,0.06)' }}
+      style={{ background: 'var(--x222)', border: '1px solid var(--w006)' }}
     >
       <div className="p-6">
         <textarea
@@ -106,7 +106,7 @@ export default function CreatePostForm({ onPostCreated, createPost }: CreatePost
           className="w-full font-inter text-sm resize-none outline-none leading-relaxed"
           style={{
             background: 'transparent',
-            color: '#eee',
+            color: 'var(--teee)',
             minHeight: 80,
           }}
         />
@@ -119,7 +119,7 @@ export default function CreatePostForm({ onPostCreated, createPost }: CreatePost
               type="button"
               onClick={removeImage}
               className="absolute top-2 right-2 w-7 h-7 rounded-full flex items-center justify-center transition-all"
-              style={{ background: 'rgba(0,0,0,0.7)', color: '#fff' }}
+              style={{ background: 'rgba(0,0,0,0.7)', color: 'var(--tfff)' }}
             >
               <X className="w-4 h-4" />
             </button>
@@ -136,14 +136,14 @@ export default function CreatePostForm({ onPostCreated, createPost }: CreatePost
       {/* Footer */}
       <div
         className="flex items-center justify-between px-6 py-3"
-        style={{ borderTop: '1px solid #333' }}
+        style={{ borderTop: '1px solid var(--x333)' }}
       >
         <div className="flex items-center gap-3">
           <button
             type="button"
             onClick={() => fileRef.current?.click()}
             className="w-9 h-9 rounded-lg flex items-center justify-center transition-all duration-300 hover:bg-white/[0.06]"
-            style={{ color: '#777' }}
+            style={{ color: 'var(--t777)' }}
             title="Add image"
             aria-label="Add image"
           >
@@ -156,7 +156,7 @@ export default function CreatePostForm({ onPostCreated, createPost }: CreatePost
             onChange={handleImageSelect}
             className="hidden"
           />
-          <span className="font-inter text-[11px]" style={{ color: '#555' }}>
+          <span className="font-inter text-[11px]" style={{ color: 'var(--x555)' }}>
             {content.length}/{MAX_CHARS}
           </span>
         </div>
@@ -166,8 +166,8 @@ export default function CreatePostForm({ onPostCreated, createPost }: CreatePost
           disabled={!content.trim() || submitting}
           className="flex items-center gap-2 font-syne font-bold text-sm uppercase tracking-[0.06em] px-6 py-2 rounded-xl transition-all duration-300"
           style={{
-            background: content.trim() && !submitting ? '#FF3B10' : '#333',
-            color: content.trim() && !submitting ? '#000' : '#666',
+            background: content.trim() && !submitting ? '#FF3B10' : 'var(--x333)',
+            color: content.trim() && !submitting ? '#000' : 'var(--t666)',
           }}
         >
           {submitting && <Loader2 className="w-4 h-4 animate-spin" />}

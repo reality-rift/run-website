@@ -255,7 +255,7 @@ export default function ExpertsPage() {
                       <div
                         className="w-full h-full flex items-center justify-center"
                         style={{
-                          background: `linear-gradient(135deg, ${meta.color}22 0%, #1a1a1a 70%)`,
+                          background: `linear-gradient(135deg, ${meta.color}22 0%, var(--x1a1a1a) 70%)`,
                         }}
                       >
                         <Icon className="w-10 h-10" style={{ color: `${meta.color}66` }} />

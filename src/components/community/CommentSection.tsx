@@ -61,7 +61,7 @@ export default function CommentSection({ postId, fetchComments, addComment, onCo
   };
 
   return (
-    <div style={{ borderTop: '1px solid #333', paddingTop: 16, marginTop: 12 }}>
+    <div style={{ borderTop: '1px solid var(--x333)', paddingTop: 16, marginTop: 12 }}>
       {loading ? (
         <div className="flex flex-col gap-3">
           {[1, 2].map((n) => (
@@ -75,7 +75,7 @@ export default function CommentSection({ postId, fetchComments, addComment, onCo
           ))}
         </div>
       ) : comments.length === 0 ? (
-        <p className="font-inter text-xs" style={{ color: '#666' }}>
+        <p className="font-inter text-xs" style={{ color: 'var(--t666)' }}>
           No comments yet. Be the first!
         </p>
       ) : (
@@ -85,7 +85,7 @@ export default function CommentSection({ postId, fetchComments, addComment, onCo
               <Link
                 to={`/user/${c.author_id}`}
                 className="w-7 h-7 rounded-full flex items-center justify-center shrink-0 font-syne font-bold text-xs hover:ring-1 hover:ring-accent/30 transition-all duration-300"
-                style={{ background: '#333', color: '#ccc' }}
+                style={{ background: 'var(--x333)', color: 'var(--tccc)' }}
               >
                 {c.author_name.charAt(0).toUpperCase()}
               </Link>
@@ -94,15 +94,15 @@ export default function CommentSection({ postId, fetchComments, addComment, onCo
                   <Link
                     to={`/user/${c.author_id}`}
                     className="font-syne font-bold text-xs hover:text-accent transition-colors duration-300"
-                    style={{ color: '#ddd' }}
+                    style={{ color: 'var(--tddd)' }}
                   >
                     {c.author_name}
                   </Link>
-                  <span className="font-inter text-[10px]" style={{ color: '#555' }}>
+                  <span className="font-inter text-[10px]" style={{ color: 'var(--x555)' }}>
                     {relativeTime(c.created_at)}
                   </span>
                 </div>
-                <p className="font-inter text-sm leading-relaxed mt-0.5" style={{ color: '#aaa' }}>
+                <p className="font-inter text-sm leading-relaxed mt-0.5" style={{ color: 'var(--taaa)' }}>
                   {c.content}
                 </p>
               </div>
@@ -122,20 +122,20 @@ export default function CommentSection({ postId, fetchComments, addComment, onCo
           disabled={!user}
           className="flex-1 font-inter text-sm px-4 py-2.5 rounded-xl outline-none transition-all duration-300"
           style={{
-            background: '#1a1a1a',
-            border: '1px solid #333',
-            color: '#eee',
+            background: 'var(--x1a1a1a)',
+            border: '1px solid var(--x333)',
+            color: 'var(--teee)',
           }}
           onFocus={(e) => (e.currentTarget.style.borderColor = '#FF3B10')}
-          onBlur={(e) => (e.currentTarget.style.borderColor = '#333')}
+          onBlur={(e) => (e.currentTarget.style.borderColor = 'var(--x333)')}
         />
         <button
           type="submit"
           disabled={!text.trim() || submitting}
           className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300"
           style={{
-            background: text.trim() ? '#FF3B10' : '#333',
-            color: text.trim() ? '#000' : '#666',
+            background: text.trim() ? '#FF3B10' : 'var(--x333)',
+            color: text.trim() ? '#000' : 'var(--t666)',
           }}
         >
           <Send className="w-4 h-4" />
