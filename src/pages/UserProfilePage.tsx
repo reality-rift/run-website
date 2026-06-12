@@ -427,7 +427,7 @@ export default function UserProfilePage() {
                         }`}
                         style={{ background: 'var(--x191919)' }}
                       >
-                        <div className="relative aspect-[16/9] overflow-hidden">
+                        <div className="keep-dark relative aspect-[16/9] overflow-hidden">
                           <img
                             src={resolveImageUrl(event.image_url)}
                             alt={event.title}

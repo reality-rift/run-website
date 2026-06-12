@@ -21,7 +21,7 @@ export default function EventCard({ event }: EventCardProps) {
       className="group w-[280px] sm:w-[300px] md:w-[380px] flex-shrink-0 cursor-pointer block"
     >
       {/* Image container */}
-      <div className="relative aspect-[3/4] rounded-2xl overflow-hidden mb-5">
+      <div className="keep-dark relative aspect-[3/4] rounded-2xl overflow-hidden mb-5">
         <img
           src={resolveImageUrl(event.image_url)}
           alt={event.title}

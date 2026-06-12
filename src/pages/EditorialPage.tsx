@@ -101,7 +101,7 @@ export default function EditorialPage() {
         <div className="max-w-content mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
             {/* Hero Feature */}
-            <Link to={`/editorial/${features[0].slug}`} className="lg:col-span-7 group relative aspect-[4/5] lg:aspect-[3/4] rounded-2xl overflow-hidden cursor-pointer block">
+            <Link to={`/editorial/${features[0].slug}`} className="keep-dark lg:col-span-7 group relative aspect-[4/5] lg:aspect-[3/4] rounded-2xl overflow-hidden cursor-pointer block">
               <img
                 src={features[0].image}
                 alt={features[0].title}
@@ -139,7 +139,7 @@ export default function EditorialPage() {
                   <Link
                     to={`/editorial/${feature.slug}`}
                     key={feature.title}
-                    className="group relative flex-1 rounded-2xl overflow-hidden cursor-pointer min-h-[260px] block"
+                    className="keep-dark group relative flex-1 rounded-2xl overflow-hidden cursor-pointer min-h-[260px] block"
                   >
                     <img
                       src={feature.image}

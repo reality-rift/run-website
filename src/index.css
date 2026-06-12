@@ -469,16 +469,16 @@ html.light .card-shine::before {
 }
 
 html.light .hero-overlay-v {
-  background: linear-gradient(to top, #f6f5f2 0%, rgba(246, 245, 242, 0.72) 40%, rgba(246, 245, 242, 0.2) 100%);
+  background: linear-gradient(to top, #f6f5f2 0%, rgba(246, 245, 242, 0.6) 28%, rgba(246, 245, 242, 0.08) 60%, transparent 100%);
 }
 
 html.light .hero-overlay-h {
-  background: linear-gradient(to right, rgba(246, 245, 242, 0.75) 0%, rgba(246, 245, 242, 0.3) 55%, transparent 100%);
+  background: linear-gradient(to right, rgba(246, 245, 242, 0.55) 0%, rgba(246, 245, 242, 0.15) 45%, transparent 70%);
 }
 
-/* In light mode let the hero photos show through more */
+/* In light mode let the hero photos show through at near-full strength */
 html.light .editorial-img.opacity-40 {
-  opacity: 0.8;
+  opacity: 0.96;
 }
 
 /* ── Hero eyebrow (needs contrast over photos in both themes) ── */
@@ -494,3 +494,34 @@ html.light .hero-eyebrow {
 html.light .bg-\[\#1a1a1a\]\/90 { background-color: rgba(255, 255, 255, 0.92); }
 html.light .hover\:bg-\[\#1a1a1a\]:hover { background-color: #ffffff; }
 html.light .hover\:bg-\[\#333\]:hover { background-color: #dedbd5; }
+
+/* ── keep-dark: exemption for content over photos/dark overlays ──
+   Inside .keep-dark, original white-on-dark colors are preserved
+   even in light mode (used on image areas of cards & heroes). */
+html.light .keep-dark .text-white { color: #fff; }
+html.light .keep-dark .text-white\/10 { color: rgba(255, 255, 255, 0.1); }
+html.light .keep-dark .text-white\/15 { color: rgba(255, 255, 255, 0.15); }
+html.light .keep-dark .text-white\/20 { color: rgba(255, 255, 255, 0.2); }
+html.light .keep-dark .text-white\/25 { color: rgba(255, 255, 255, 0.25); }
+html.light .keep-dark .text-white\/30 { color: rgba(255, 255, 255, 0.3); }
+html.light .keep-dark .text-white\/35 { color: rgba(255, 255, 255, 0.35); }
+html.light .keep-dark .text-white\/40 { color: rgba(255, 255, 255, 0.4); }
+html.light .keep-dark .text-white\/45 { color: rgba(255, 255, 255, 0.45); }
+html.light .keep-dark .text-white\/50 { color: rgba(255, 255, 255, 0.5); }
+html.light .keep-dark .text-white\/55 { color: rgba(255, 255, 255, 0.55); }
+html.light .keep-dark .text-white\/60 { color: rgba(255, 255, 255, 0.6); }
+html.light .keep-dark .text-white\/65 { color: rgba(255, 255, 255, 0.65); }
+html.light .keep-dark .text-white\/70 { color: rgba(255, 255, 255, 0.7); }
+html.light .keep-dark .text-white\/75 { color: rgba(255, 255, 255, 0.75); }
+html.light .keep-dark .text-white\/80 { color: rgba(255, 255, 255, 0.8); }
+html.light .keep-dark .text-white\/90 { color: rgba(255, 255, 255, 0.9); }
+html.light .keep-dark .text-\[\#F5F5F0\] { color: #f5f5f0; }
+html.light .keep-dark .border-white\/10 { border-color: rgba(255, 255, 255, 0.1); }
+html.light .keep-dark .border-white\/\[0\.06\] { border-color: rgba(255, 255, 255, 0.06); }
+html.light .keep-dark .border-white\/\[0\.08\] { border-color: rgba(255, 255, 255, 0.08); }
+html.light .keep-dark .border-white\/\[0\.1\] { border-color: rgba(255, 255, 255, 0.1); }
+html.light .keep-dark .bg-white\/5 { background-color: rgba(255, 255, 255, 0.05); }
+html.light .keep-dark .bg-white\/10 { background-color: rgba(255, 255, 255, 0.1); }
+html.light .keep-dark .bg-white\/40 { background-color: rgba(255, 255, 255, 0.4); }
+html.light .keep-dark .bg-white\/\[0\.04\] { background-color: rgba(255, 255, 255, 0.04); }
+html.light .keep-dark .bg-white\/\[0\.06\] { background-color: rgba(255, 255, 255, 0.06); }

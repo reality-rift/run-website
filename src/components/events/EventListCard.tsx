@@ -73,7 +73,7 @@ function EventListCard({
         style={{ background: 'var(--x222)' }}
       >
         {/* ── Image ──────────────────────────────────────── */}
-        <div className="w-[320px] shrink-0 relative overflow-hidden hidden sm:block">
+        <div className="keep-dark w-[320px] shrink-0 relative overflow-hidden hidden sm:block">
           <img
             src={resolveImageUrl(event.image_url)}
             alt={event.title}

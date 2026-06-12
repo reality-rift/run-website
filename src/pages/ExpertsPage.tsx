@@ -243,7 +243,7 @@ export default function ExpertsPage() {
                   to={`/experts/${a.id}`}
                   className="group rounded-2xl overflow-hidden bg-white/[0.02] border border-white/[0.06] hover:border-accent/25 hover:bg-white/[0.03] transition-all duration-500"
                 >
-                  <div className="relative aspect-video overflow-hidden">
+                  <div className="keep-dark relative aspect-video overflow-hidden">
                     {a.image_url ? (
                       <img
                         src={resolveImageUrl(a.image_url)}
